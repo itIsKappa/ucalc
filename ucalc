@@ -5,6 +5,7 @@
 
 try:
     import sys
+    import os
     from time import ctime
     from time import time
     import math
@@ -1078,6 +1079,9 @@ has been given to me. Try --help for more information.""")
     elif temporary_string == "--constants" or temporary_string == "-c":
         print(constant_view)
         exit()
+    elif temporary_string == "-L":
+        os.system("less /usr/share/ucalc/ucalcLog.txt")
+
 
     # Checking extra inputs from the user
     final_touch = ""
