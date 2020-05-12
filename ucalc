@@ -1081,6 +1081,10 @@ has been given to me. Try --help for more information.""")
         exit()
     elif temporary_string == "-L":
         os.system("less /usr/share/ucalc/ucalcLog.txt")
+    elif temporary_string == "-Lv":
+        with open(path_to_log, "r") as file:
+            print(file.read())
+        exit()
 
 
     # Checking extra inputs from the user
