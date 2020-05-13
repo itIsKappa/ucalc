@@ -17,7 +17,7 @@ try:
     
     # First program version, then year, then month
     version = "v1536"
-    # ####  Updated on May 6th Wednesday 2020 #### #
+    # ####  Updated on May 13th Wednesday 2020 #### #
 
     version_view = f"""
 UCalc © 2020 HathimAli
