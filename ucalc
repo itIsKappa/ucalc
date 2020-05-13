@@ -13,7 +13,7 @@ try:
     starting_time = time()
     log = f"{ctime()}\n"
     
-    path_to_log = "/usr/share/ucalc/ucalcLog.txt" 
+    path_to_log = "ucalcLog.txt" 
     
     # First program version, then year, then month
     version = "v1536"
@@ -1080,7 +1080,8 @@ has been given to me. Try --help for more information.""")
         print(constant_view)
         exit()
     elif temporary_string == "-L":
-        os.system("less /usr/share/ucalc/ucalcLog.txt")
+        os.system(f"less {path_to_log}")
+        exit()
     elif temporary_string == "-Lv":
         with open(path_to_log, "r") as file:
             print(file.read())
