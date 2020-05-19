@@ -3,6 +3,12 @@
 # UCalc © 2020 Hathim Ali
 # Distributed under GNU GPL v3
 
+# If you are running this program from the folder itself
+# rather moving it into /usr/bin or running it after 
+# installing it using the deb package or install.sh,
+# it is strongly adviced that you may run it
+# not by 'python3 ucalc' but './ucalc'
+
 try:
     import sys
     import os
@@ -13,7 +19,6 @@ try:
     starting_time = time()
     log = f"{ctime()}\n"
     
-    # It is very likely that you may find it hard read any of the log
     path_to_log = "ucalcLog.txt" 
     
     # First program version, then year, then month
