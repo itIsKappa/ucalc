@@ -13,6 +13,7 @@ try:
     starting_time = time()
     log = f"{ctime()}\n"
     
+    # It is very likely that you may find it hard read any of the log
     path_to_log = "ucalcLog.txt" 
     
     # First program version, then year, then month
