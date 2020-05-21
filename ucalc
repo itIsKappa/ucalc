@@ -16,7 +16,7 @@ try:
     path_to_log = "ucalcLog.txt" 
     
     # First program version, then year, then month
-    version = "v1536"
+    version = "v2675"
     # ####  Updated on May 13th Wednesday 2020 #### #
 
     version_view = f"""
@@ -174,6 +174,8 @@ The converters are as follows:
 
     bin - converts the result to binary/base-2.
 
+    ter - converts the result to ternanray/base-3.
+
     oct - converts the result to octal/base-8.
 
     hex - converts the result to hexadecimal/base-16.
@@ -192,6 +194,8 @@ The reverse converters are as follows:
 
     frombin - converts the given value from binary to decimal.
 
+    fromter - converts the given from ternary to decimal.
+
     fromoct - converts the given value from octal to decimal.
 
     fromhex - converts the given value from hexadecimal to decimal.
@@ -199,11 +203,12 @@ The reverse converters are as follows:
     from64 - converts the given the value from base-64 to decimal.
 
 It is upon you that you should not include other than 1 or 0 in
-reverse binary converter and nothing but between 0 - 7 in
-octal converter for even if you are to enter wrong values to
-binary and octal reverse converter they will tolerate
+reverse binary converter, nothing but between 0 - 7 in
+octal converter and between 0 - 3 in ternary converter
+for even if you are to enter wrong values to
+binary, octal and ternary converters, they will tolerate
 and return a wrong value. Where as hexadecimal and base-64 reverse
-converts will not tolerate and excuse that they have been given a
+converters will not tolerate and excuse that they have been given a
 non-convertible value. 
  
 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -222,6 +227,10 @@ non-convertible value.
 
 --constants or -c - brings about the list containing constants supported
                     by UCalc {version}
+
+-L - shows the log of last calculation using "less" utility in Linux.
+
+-Lv - dumps the log of last calculation into terminal or standard out.
 
 ========================
 ||||||||||||||||||||||||| UCalc © 2020 HathimAli |||||||||||||||||||||||||
@@ -256,6 +265,28 @@ Constants supported by UCalc {version} are as follows:
         def error_correction(self, number):
             if "." in number or "e" in number:
                 exit("UCalc excuses: Cannot convert numbers with floating value or Euler's.")
+
+        def reverse_ternary(self, num):
+            def middle(num):
+                value = 0
+                items = []
+                for each in num:
+                    items.append(each)
+                items.reverse()
+                nos = len(items)
+                for each in range(nos):
+                    items[each] = int(items[each])
+                for each in range(nos):
+                    value += 3 ** each * items[each]
+                return value
+
+            num = num.split(" ")
+            toAppend = ""
+            for each in num:
+                each = middle(each)
+                each = str(each)
+                toAppend += each + " "
+            return toAppend
 
         def reverse_hexadecimal(self, num):
             hex_alpha_values = {
@@ -414,6 +445,32 @@ Constants supported by UCalc {version} are as follows:
                 each = str(each)
                 to_append += each + " "
             return to_append
+
+        def ternary(self, number):
+            Converters().error_correction(number)
+            number = number.split(" ")
+            valum_final = ''
+            for num in number:
+                item = []
+                try:
+                    num = int(num)
+                except ValueError:
+                    break
+                while True:
+                    valum_finale = ''
+                    value = num // 3
+                    value2 = num % 3
+                    item.append(value2)
+                    num = value
+                    if num == 0:
+                        item.reverse()
+                        for each in item:
+                            valum_finale += each.__str__()
+                        valum_final += valum_finale + " "
+                        break
+                    else:
+                        pass
+            return valum_final
 
         def hexadecimal(self, number):
             Converters().error_correction(number)
@@ -683,7 +740,7 @@ UCalc excuses:
         for each in some_list:
             to_be_num_string += each + " "
         to_be_num_string = to_be_num_string.strip()
-        log += f"to_be_num: {to_be_num_string}"
+        log += f"to_be_num: {to_be_num_string}\n"
         num = to_be_num_string
 
         # RaiseTo / PowerOf #############################
@@ -1087,7 +1144,6 @@ has been given to me. Try --help for more information.""")
             print(file.read())
         exit()
 
-
     # Checking extra inputs from the user
     final_touch = ""
     precedence = False
@@ -1128,6 +1184,9 @@ has been given to me. Try --help for more information.""")
     elif ".oct" in temporary_string:
         temporary_string = temporary_string.replace(".oct", "")
         converter = "oct"
+    elif ".ter" in temporary_string:
+        temporary_string = temporary_string.replace(".ter", "")
+        converter = "ter"
     elif ".from64" in temporary_string:
         temporary_string = temporary_string.replace(".from64", "")
         temporary_string = extra_input_insurance(temporary_string)
@@ -1149,6 +1208,9 @@ has been given to me. Try --help for more information.""")
     elif ".fromoct" in temporary_string:
         temporary_string = temporary_string.replace(".fromoct", "")
         converter = "fromoct"
+    elif ".fromter" in temporary_string:
+        temporary_string = temporary_string.replace(".fromter", "")
+        converter = "fromter"
 
     temporary_string = extra_input_insurance(temporary_string)
 
@@ -1300,18 +1362,24 @@ has been given to me. Try --help for more information.""")
     elif converter == "oct":
         reply = conversion.octal(reply)
         log += "hasCalledUponOctalConverter\n"
+    elif converter == "ter":
+        reply = conversion.ternary(reply)
+        log += "hasCalledUponTernaryConverter\n"
     elif converter == "bin":
         reply = conversion.binary(reply)
         log += "hasCalledUponBinaryConverter\n"
     elif converter == "fromhex":
         reply = conversion.reverse_hexadecimal(reply.upper())
-        log += "hasCalledUponReverseHexDecimalConverter"
+        log += "hasCalledUponReverseHexDecimalConverter\n"
     elif converter == "frombin":
         reply = conversion.reverse_binary(reply)
-        log += "hasCalledUponReverseBinaryConverter"
+        log += "hasCalledUponReverseBinaryConverter\n"
+    elif converter == "fromter":
+        reply = conversion.reverse_ternary(reply)
+        log += "hasCalledUponReverseBinaryConverter\n"
     elif converter == "fromoct":
         reply = conversion.reverse_octal(reply)
-        log += "hasCalledUponReverseOctalConverter"
+        log += "hasCalledUponReverseOctalConverter\n"
     else:
         log += "proceedingWithDefaultBase\n"
 
