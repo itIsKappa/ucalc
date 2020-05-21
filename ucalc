@@ -22,7 +22,7 @@ try:
     path_to_log = "ucalcLog.txt" 
     
     # First program version, then year, then month
-    version = "v2675"
+    version = "v3000"
     # ####  Updated on May 13th Wednesday 2020 #### #
 
     version_view = f"""
@@ -262,6 +262,14 @@ Constants supported by UCalc {version} are as follows:
     R - it stands for the Gas Constant
 
     h - it stands for Planck's Constant
+
+    N - it stands for Avogadro's Number
+
+    C - it stands for Speed of Light in Vacuum
+
+    F - it stands for Faraday Constant
+
+    k - it stands for Boltzmann Constant
 
 ====================
 """
@@ -1252,6 +1260,10 @@ has been given to me. Try --help for more information.""")
         temp_string = temp_string.replace("G", (6.673 * 10 ** -11).__str__())  # Universal Gravitational Constant
         temp_string = temp_string.replace("R", "8.314")  # Universal Gas Constant
         temp_string = temp_string.replace("h", (6.62 * 10 ** -34).__str__())  # Planck's Constant
+        temp_string = temp_string.replace("N", (6.022 * 10 ** 23).__str__()) # Avogadro's Number
+        temp_string = temp_string.replace("k", (1.38 * 10 ** -23).__str__()) # Boltzmann Constant
+        temp_string = temp_string.replace("F", (9.649 * 10 ** 4).__str__()) # Faraday Constant
+        temp_string = temp_string.replace("C", (2.9979 * 10 ** 8).__str__()) # Speed Of Light In Vacuum
 
         # Negative Value Argument Receiver
         temp_string = temp_string.replace("~", "-")
