@@ -1343,9 +1343,9 @@ has been given to me. Try --help for more information.""")
     for each in result_list:
         string += (each.__str__() + " ")
     string = formatting(string)
-    string = string.replace(" - ", "abcd")
+    string = string.replace(" - ", "some_random_text")
     string = string.replace("- ", "-")
-    string = string.replace("abcd", " - ")
+    string = string.replace("some_random_text", " - ")
     string = string.replace("--", "+")
     log += f"After Replacement: {string}\n"
 
@@ -1416,3 +1416,4 @@ except KeyboardInterrupt:
     with open(f"{path_to_log}", "w") as file:
         file.write(log)
     exit("-- UCalc has been liberated --")
+
