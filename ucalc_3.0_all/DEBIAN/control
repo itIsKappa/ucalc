@@ -1,0 +1,9 @@
+Package: ucalc
+Version: 3.0
+Architecture: all
+Essential: no
+Priority: optional
+Depends: python3
+Maintainer: Hathim Ali
+Description: A smart, intuitive, general and advanced purpose command-line-interface calculator
+
