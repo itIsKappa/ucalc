@@ -1484,7 +1484,6 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             main()
 
         else:
-<<<<<<< HEAD
             print(f"UCalc Replies: {reply}")
             log += f"UCalc Replied: {along_with_answer} = {reply} @ {ctime()}\n"
             ending_time = time()
@@ -1502,7 +1501,6 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             file.write(log)
         exit("-- UCalc has been liberated --")
 main()
-=======
             result_list.append(each)
 
     log += f"Before Replacement{result_list}\n"
@@ -1583,5 +1581,4 @@ except KeyboardInterrupt:
     with open(f"{path_to_log}", "w") as file:
         file.write(log)
     exit("-- UCalc has been liberated --")
->>>>>>> 0a788f7a5fe36070ea52e5d9613807c90c1f6007
 
