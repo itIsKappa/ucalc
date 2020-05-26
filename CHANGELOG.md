@@ -1,7 +1,4 @@
 
-# Log of updates staring from:
-
-## Version 2.95, May 21 2020, Minor:
 # Log of updates starting from:
 ## Version 2.95, May 21 2020:
 ### Added base converter:
