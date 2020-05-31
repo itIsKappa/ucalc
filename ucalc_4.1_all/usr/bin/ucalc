@@ -28,7 +28,7 @@ def main():
         else:
             log += f"{ctime()}\n"
         
-        path_to_log = "ucalcLog.txt" 
+        path_to_log = "/usr/share/ucalc/ucalcLog.txt" 
         
         # First program version, then year, then month
         version = "v3000"
