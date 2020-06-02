@@ -15,8 +15,8 @@
 
 ## Version 3.0, May 25 2020, Minor:
 ### Fixed path-to-log bug in deb package
-  * Fixed the bug that causes ucalcLog.txt to be made on the
-    current working directory
+  * Fixed the bug that causes ucalcLog.txt
+    to be made on the current working directory
   * Added creating COPYING in /usr/share/doc/ucalc/
 
 ## Version 4.0, May 26 2020, Major:
@@ -36,3 +36,8 @@
   * Added help for interactive mode in the
     the global help 
 
+## Version 4.102, June 2 2020, Minor:
+### Fixed factorial error
+  * Fixed error when calling factorial by exclamation
+    interactive mode
+  * Created debian package for Version 4.102
