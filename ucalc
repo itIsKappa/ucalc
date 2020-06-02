@@ -1421,6 +1421,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
         string = string.replace("- ", "-")
         string = string.replace("abcd", " - ")
         string = string.replace("--", "+")
+        string = string.replace("! ", "!")
         log += f"After Replacement: {string}\n"
 
         with open(f"{path_to_log}", "w") as file:
