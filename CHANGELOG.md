@@ -1,5 +1,4 @@
 
-<<<<<<< HEAD
 # Log of updates staring from:
 
 ## Version 2.95, May 21 2020, Minor:
