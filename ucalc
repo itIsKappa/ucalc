@@ -312,6 +312,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
         class Converters():
 
             def error_correction(self, number):
+                number = str(number)
                 if "." in number or "e" in number:
                     exit("UCalc excuses: Cannot convert numbers with floating value or Euler's.")
 
@@ -1417,9 +1418,9 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
         for each in result_list:
             string += (each.__str__() + " ")
         string = formatting(string)
-        string = string.replace(" - ", "abcd")
+        string = string.replace(" - ", "substitute_text")
         string = string.replace("- ", "-")
-        string = string.replace("abcd", " - ")
+        string = string.replace("substitute_text", " - ")
         string = string.replace("--", "+")
         string = string.replace("! ", "!")
         log += f"After Replacement: {string}\n"
@@ -1447,19 +1448,19 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
 
         conversion = Converters()
         if converter == "64":
-            reply = conversion.base64(reply)
+            reply = conversion.base64(reply.__str__())
             log += "hasCalledUponBaseSixtyFourConverter\n"
         elif converter == "hex":
-            reply = conversion.hexadecimal(reply)
+            reply = conversion.hexadecimal(reply.__str__())
             log += "hasCalledUponHexDecimalConverter\n"
         elif converter == "oct":
-            reply = conversion.octal(reply)
+            reply = conversion.octal(reply.__str__())
             log += "hasCalledUponOctalConverter\n"
         elif converter == "ter":
-            reply = conversion.ternary(reply)
+            reply = conversion.ternary(reply.__str__())
             log += "hasCalledUponTernaryConverter\n"
         elif converter == "bin":
-            reply = conversion.binary(reply)
+            reply = conversion.binary(reply.__str__())
             log += "hasCalledUponBinaryConverter\n"
         elif converter == "fromhex":
             reply = conversion.reverse_hexadecimal(reply.upper())
