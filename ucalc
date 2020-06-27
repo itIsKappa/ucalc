@@ -87,7 +87,7 @@ Though, it must be noted that nested brackets of same kind
 will confuse UCalc and may reply erroneously or may not even reply.
 There cannot be square brackets inside square brackets but curly brackets.
 Ex gratia, 2+[2x[5+5]] is wrong and UCalc will most likely err
-while 2+[2x{5+5}] is the best practice and will yield correct answers.
+while 2+[2+{"{5+5}"}] is the best practice and will yield correct answers.
 ---------------------------------------------------------------------------
    F A C T O R I A L S,  S Q U A R E R O O T S  A N D  C U B E R O O T S
 ---------------------------------------------------------------------------
@@ -709,7 +709,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
         
         def cube_root(num):
             global log
-            with open(f"{path_to_log}", "w") as file:
+            with open(path_to_log, "w") as file:
                         file.write(log)
             num = num.replace(":", "")
             try:
@@ -724,7 +724,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             """ The original factorial finder has been
                 made common to act as a fallback """
             log += f"{num}"
-            with open(f"{path_to_log}", "w") as file:
+            with open(path_to_log, "w") as file:
                 file.write(log)
             num = num.replace("?", "")
             num = num.replace("!", "")
@@ -1038,7 +1038,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                 log += f"{one_value_list}"
                 log += f"{two_value_list}"
                 log += f"{sub_split}"
-                with open(f"{path_to_log}", "w") as file:
+                with open(path_to_log, "w") as file:
                     file.write(log)
                 try:
                     one_value = int(one_value_list[-1])
@@ -1096,7 +1096,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                     args[each] = cube_root(args[each])
                     log += f"SquareRoot: {args}\n"
 
-            with open(f"{path_to_log}", "w") as file:
+            with open(path_to_log, "w") as file:
                 file.write(log)
 
             for each in args:
@@ -1264,8 +1264,11 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
         if ".base64" in temporary_string:
             temporary_string = temporary_string.replace(".base64", "")
             converter = "64"
-        elif ".hex" in temporary_string:
+        # In interactive mode, 'hex' becomes 'he x' due to
+        # interactive mode so, =>
+        elif ".hex" in temporary_string or ".he x" in temporary_string:
             temporary_string = temporary_string.replace(".hex", "")
+            temporary_string = temporary_string.replace(".he x", "")
             converter = "hex"
         elif ".bin" in temporary_string:
             temporary_string = temporary_string.replace(".bin", "")
@@ -1285,11 +1288,12 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                 exit("UCalc excuses: You had either tried to do arithmetic operations or entereinvalid base64 value.")
             log += "madeABaseSixtyFourPromptReply"
             log += ctime()
-            with open(f"{path_to_log}", "w") as file:
+            with open(path_to_log, "w") as file:
                 file.write(log)
             exit(f"UCalc has skipped everything and replied: {prompt_reply}")
-        elif ".fromhex" in temporary_string:
+        elif ".fromhex" in temporary_string or ".fromhe x" in temporary_string:
             temporary_string = temporary_string.replace(".fromhex", "")
+            temporary_string = temporary_string.replace(".fromhe x", "")
             converter = "fromhex"
         elif ".frombin" in temporary_string:
             temporary_string = temporary_string.replace(".frombin", "")
@@ -1368,7 +1372,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             else:
                 result_list.append(each)
 
-        with open(f"{path_to_log}", "w") as file:
+        with open(path_to_log, "w") as file:
             file.write(log)
 
         log += f"{args}\n"
@@ -1425,7 +1429,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
         string = string.replace("! ", "!")
         log += f"After Replacement: {string}\n"
 
-        with open(f"{path_to_log}", "w") as file:
+        with open(path_to_log, "w") as file:
             file.write(log)
 
         # Implementing extra input from the user
@@ -1483,6 +1487,8 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             ending_time = time()
             total_time = ending_time - starting_time
             log += f"[END] in {total_time}"
+            with open(path_to_log, "w") as file:
+                file.write(log)
             main()
 
         else:
@@ -1492,14 +1498,14 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             total_time = ending_time - starting_time
             log += f"[END] in {total_time}"
             log += f"UCalc was liberated @ {ctime()} only employed for {total_time}"
-        with open(f"{path_to_log}", "w") as file:
+        with open(path_to_log, "w") as file:
             file.write(log)
 
     except KeyboardInterrupt:
         ending_time = time()
         total_time = ending_time - starting_time
         log += f"UCalc was liberated @ {ctime()} only employed for {total_time}"
-        with open(f"{path_to_log}", "w") as file:
+        with open(path_to_log, "w") as file:
             file.write(log)
         exit("-- UCalc has been liberated --")
 main()
