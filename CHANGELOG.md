@@ -1,7 +1,4 @@
 
-	U C A L C    L O G
-----------------------------------
-
 # Log of updates staring from:
 ## Version 2.95, May 21 2020, Minor:
 ### Added base converter:
