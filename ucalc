@@ -30,9 +30,7 @@ def main():
         
         path_to_log = "ucalcLog.txt" 
         
-        # First program version, then year, then month
-        version = "v3000"
-        # ####  Updated on May 26 Tuesday 2020 #### #
+        version = "v4.2"
 
         version_view = f"""
 UCalc © 2020 HathimAli
