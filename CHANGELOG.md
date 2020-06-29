@@ -1,6 +1,8 @@
 
-# Log of updates staring from:
+	U C A L C    L O G
+----------------------------------
 
+# Log of updates staring from:
 ## Version 2.95, May 21 2020, Minor:
 ### Added base converter:
   * Ternary Converter
@@ -30,7 +32,7 @@
 
 ## Version 4.1, May 30 2020, Minor:
 ### Added support for Windows
-  * Can run on Windows from the ucalc file
+  * Can run on Windows from the ucalc source file
   * Also can be run by using python3
 ### Added interactive mode help
   * Added help for interactive mode in the
@@ -41,3 +43,11 @@
   * Fixed error when calling factorial by exclamation
     interactive mode
   * Created debian package for Version 4.102
+
+## Version 4.2, June 29 2020, Minor:
+### Fixed hexadecimal bug
+  * Fixed error when calling hexadeciaml converters in
+    interactive mode
+### Instant log writer
+  * Added instatn log writing after each question
+    in interactive mode
