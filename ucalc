@@ -29,8 +29,9 @@ def main():
             log += f"{ctime()}\n"
         
         path_to_log = "ucalcLog.txt" 
-        
-        version = "v4.2"
+        path_to_f = "./f"
+        path_to_f_c = "f.c"
+        version = "v4.3"
 
         version_view = f"""
 UCalc © 2020 HathimAli
@@ -84,7 +85,7 @@ the curly brackets and the square brackets.
 Though, it must be noted that nested brackets of same kind
 will confuse UCalc and may reply erroneously or may not even reply.
 There cannot be square brackets inside square brackets but curly brackets.
-Ex gratia, 2+[2x[5+5]] is wrong and UCalc will most likely err
+Exempli gratia, 2+[2x[5+5]] is wrong and UCalc will most likely err
 while 2+[2+{"{5+5}"}] is the best practice and will yield correct answers.
 ---------------------------------------------------------------------------
    F A C T O R I A L S,  S Q U A R E R O O T S  A N D  C U B E R O O T S
@@ -94,14 +95,14 @@ Factorials:
     First is to add "!" to beginning of a number.
     Though, you may have add a  backslash before the exclamation mark
     as it is a special character.
-    Another, will be to add "?" to beginning of a number as it avoids
+    Another, will be to add "?" to ending of a number as it avoids
     having to enter a backslash everytime before you type an
     exclamation mark.
-    Ex gratia, \\!5 will return 120, but, ?5 also returns 120 and it is
+    Exempli gratia, 5\\! will return 120, but, ?5 also returns 120 and it is
     lesser to write.
-    Again, \\![\\!3] will return 720, but, there is backslashes two
+    Again, [3\\!]\\! will return 720, but, there is backslashes two
     times and your inputs becomes less readable and understandable to
-    ?[?3], wherein one can quickly read and understand the expression,
+    [3?]?, wherein one can quickly read and understand the expression,
     in both, UCalc can read your input and return an answer.
 
 Square-roots:
@@ -112,7 +113,7 @@ Square-roots:
     It is not available in every in keyboard layout and thus calls
     for a better and easier way.
     The better way is to, use an underscore or "_".
-    Ex gratia, _25 will return 5
+    Exempli gratia, _25 will return 5
                _[64+46] will return 10
                If you try finding square root of a number that is
                not a square, like,
@@ -122,18 +123,26 @@ Cube-roots:
     Fortunately and unfortunately, there is only way in which you can
     find the cube root of number and that is to add a colon or ":"
     to the beginning like you have done as in above cases.
-    Ex gratia, :27 will give 3
+    Exempli gratia, :27 will give 3
+
+---------------------
+    F A C T O R S      
+---------------------
+UCalc also provides for finding factors of a given number.
+Similar the many extra inputs, which happens to be mentioned
+below extra inputs section, the number is to end with either
+'.factor' or '.f'
+Exempli gratia, 4.f wil return 1, 2, 4
 
 =====================================
 R U L E S  O F  C A L C U L A T I O N
 =====================================
-
 UCalc, by default and implicitly, uses the rule of BODMAS.
 It can also use the rule of precedence though it has to be explicitly
 mentioned as it falls under the category of extra inputs.
 Thus, an expression followed by '.precede' will prompt the UCalc to use
 the rule of precedence.
-Ex gratia, 5-4x2 will return -3, but,
+Exempli gratia, 5-4x2 will return -3, but,
 5-4x2.precede will return 2
 
 ============================
@@ -141,7 +150,7 @@ N E G A T I V E  V A L U E S
 ============================
 Negating a value in UCalc is simple.
 You should add ~ to the beginning of the number.
-Ex gratia, 2--2 or 2-[-2] is wrong and it will cause errors.
+Exempli gratia, 2--2 or 2-[-2] is wrong and it will cause errors.
            2-~2 is the right way and will return the aniticipated value,
            id est, 0
 Simply a minus sign is considered an arithmetic operator to UCalc,
@@ -150,7 +159,6 @@ if only a value begin with ~, UCalc will consider it negative.
 ======================
 E X T R A  I N P U T S
 ======================
-
 Some extra inputs have been predefined for UCalc which affects the result
 of the calculation. All extra inputs are akin to how you have to mention
 to UCalc to use the rule of precedence rather than BODMAS (If you have
@@ -159,23 +167,22 @@ not read about it, it is aforementioned under the section--
 The extra inputs are as follows:
     round - estimately rounds the result, if it is a floating point
             number.
-            Ex gratia, 5/2 will return 2.5, but,
+            Exempli gratia, 5/2 will return 2.5, but,
             5/2.round will return simply 2
     
     ceil - rounds the result but to the nearest highest value to
            the result ('ceiling' is shortened to 'ceil').
-           Ex gratia, 5/2.round will return 2 , but,
+           Exempli gratia, 5/2.round will return 2 , but,
            5/2.ceil will return 3.
 
     floor - rounds the result but to the nearest lowest value to 
             the result ('floor' is contrary to 'ceil'/'ceiling').
-            Ex gratia, 5/3 will return 1.6666666666666667, but,
+            Exempli gratia, 5/3 will return 1.6666666666666667, but,
             5/3.floor will return 1 on the other hand, if you are
             to use '.round', then, the answer will be 2 for the
             result is evidently above 1.5, so, as the estimation will
             be to round to the nearest value the result is such,
             id est, 2.
-
 ===================
 C O N V E R T E R S
 ===================
@@ -255,7 +262,7 @@ non-convertible value.
 
 UCalc is packed with a few constants which avails you from typing 
 specific values everytime and makes UCalc less verbose.
-Ex gratia, rather than entering 2x22/7x7,
+Exempli gratia, rather than entering 2x22/7x7,
            you can enter 2xpix7 and it returns 44 
 
 Constants supported by UCalc {version} are as follows:
@@ -312,7 +319,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             def error_correction(self, number):
                 number = str(number)
                 if "." in number or "e" in number:
-                    exit("UCalc excuses: Cannot convert numbers with floating value or Euler's.")
+                    exit("UCalc Excuses: Cannot convert numbers with floating value or Euler's.")
 
             def reverse_ternary(self, num):
                 def middle(num):
@@ -359,7 +366,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                         try:
                             each_value = int(each_value)
                         except ValueError:
-                            exit("UCalc excuses: Input does not appear to be hexadecimal value.")
+                            exit("UCalc Excuses: Input does not appear to be hexadecimal value.")
                         value += 16 ** each * each_value
                     return value
 
@@ -697,12 +704,16 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                 return valum_final
 
 
-        def formatting(string):
+        def safety_formatting(string):
             string = string.strip()
-            string = string.replace("? ", "?")
-            string = string.replace(" ? ", "?")
             string = string.replace("_ ", "_")
             string = string.replace(" _ ", "_")
+            string = string.replace(" - ", "substitute_text")
+            string = string.replace("- ", "-")
+            string = string.replace("substitute_text", " - ")
+            string = string.replace("--", "+")
+            string = string.replace(" ?", "?")
+            string = string.replace(" !", "!")
             return string
         
         def cube_root(num):
@@ -713,8 +724,8 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             try:
                 num = int(num)
             except ValueError:
-                exit(f"UCalc excuses: Some non-calculable value('{num}') has been given to me.")
-            value = num ** 0.3333333333333333
+                exit(f"UCalc Excuses: Some non-calculable value('{num}') has been given to me.")
+            value = math.ceil(num ** 0.333333333333333)
             return value.__str__()
 
         def factorial(num):
@@ -732,7 +743,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                 try:
                     num = float(num)
                 except ValueError:
-                    exit(f"UCalc excuses: Some non-calculable value('{num}') has been given to me.")
+                    exit(f"UCalc Excuses: Some non-calculable value('{num}') has been given to me.")
 
             # Fallback # factorial_list = [1]
             # Fallback # factorial_value = 1
@@ -747,7 +758,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                 return math.factorial(num).__str__()
             except ValueError:
                 exit(f"""
-    UCalc excuses:
+    UCalc Excuses:
         Some expression in your input resulted in a floating point value and that value called to find its factorial.
         Finding factorial of floating point values is impossible for me; It might result in an infinite loop,
         where your machine might not respond.
@@ -764,7 +775,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                 try:
                     num = float(num)
                 except ValueError:
-                    exit(f"UCalc excuses: Some non-calculable value('{num}') has been given to me.")
+                    exit(f"UCalc Excuses: Some non-calculable value('{num}') has been given to me.")
             return math.sqrt(num).__str__()
 
         def calculator_bodmas(num):
@@ -772,13 +783,13 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             some_list = num.split(" ")
             to_be_num_string = ""
             for each in range(len(some_list)):
-                if some_list[each].startswith("?") or some_list[each].startswith("!"):
+                if "?" in some_list[each] or "!" in some_list[each]:
                     some_list[each] = factorial(some_list[each])
                     log += f"Factorial: {args}\n"
 
                 elif some_list[each].startswith("_") or some_list[each].startswith("√"):
                     some_list[each] = square_root(some_list[each])
-                    log += f"SquareRoot: {args}\n"
+                    log += f"SquareRoot: √{args}\n"
                 elif some_list[each].startswith(":"):
                     some_list[each] = cube_root(some_list[each])
                     log += f"CubeRoot: {args}\n"
@@ -862,7 +873,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                 try:
                     div_value = one_value / two_value
                 except ZeroDivisionError:
-                    exit("UCalc excuses: Cannot divide by zero.")
+                    exit("UCalc Excuses: Cannot divide by zero.")
 
                 two_value_list.remove(two_value_list[0])
 
@@ -1084,7 +1095,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             numbers_list = []
             # Separating Arithmetic Operators From Numbers Block
             for each in range(len(args)):
-                if args[each].startswith("?") or args[each].startswith("!"):
+                if "?" in args[each] or "!" in args[each]:
                     args[each] = factorial(args[each])
                     log += f"Factorial: {args}\n"
                 elif args[each].startswith("_") or args[each].startswith("√"):
@@ -1107,7 +1118,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                             each = float(each)
                         except ValueError:
                             exit(f"""
-    UCalc excuses: A non-calculable value({each})
+    UCalc Excuses: A non-calculable value({each})
     has been given to me. Try --help for more information.""")
                     numbers_list.append(each)
                     args.remove(each.__str__())
@@ -1203,7 +1214,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                 print(constant_view)
                 main()
             elif temporary_string == "quit":
-                exit("\n< QUIT >")
+                exit("< QUIT >")
 
             return temporary_string    
 
@@ -1235,6 +1246,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
         final_touch = ""
         precedence = False
         converter = "none"
+        factorise = False
         if ".round" in temporary_string:
             temporary_string = temporary_string.replace(".round", "")
             final_touch = "round"
@@ -1283,7 +1295,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             try:
                 prompt_reply = Converters().reverse_base64(temporary_string)
             except ValueError:
-                exit("UCalc excuses: You had either tried to do arithmetic operations or entereinvalid base64 value.")
+                exit("UCalc Excuses: You had either tried to do arithmetic operations or entereinvalid base64 value.")
             log += "madeABaseSixtyFourPromptReply"
             log += ctime()
             with open(path_to_log, "w") as file:
@@ -1302,6 +1314,15 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
         elif ".fromter" in temporary_string:
             temporary_string = temporary_string.replace(".fromter", "")
             converter = "fromter"
+        
+        if ".factor" in temporary_string or ".f" in temporary_string:
+            factorise = True
+            temporary_string = temporary_string.replace(".factor", "")
+            temporary_string = temporary_string.replace(".f", "")
+            if not os.path.exists(os.path.abspath("f")):
+                log += "### First Factoriser Compilation ###"
+                os.system(f"gcc {path_to_f_c} -o {path_to_f} -g -lgmp -w")
+            log += "### Prepared labour for Factoriser ###\n"
 
         temporary_string = extra_input_insurance(temporary_string)
 
@@ -1384,8 +1405,8 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             string += (each.__str__() + "$")
         string = string.strip()
         #
-        string = string.replace(" - ", "abcd")
-        string = string.replace("abcd", " - ")
+        string = string.replace(" - ", "substitute_text")
+        string = string.replace("substitute_text", " - ")
         string = string.replace("--", "+")
         log += f"After Skirmish: {string}\n"
 
@@ -1398,7 +1419,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
         for i in range(len(result_string_list)):
             result_string_list[i] = result_string_list[i].replace("$$", "$")
             result_string_list[i] = result_string_list[i].replace("$", " ")
-            result_string_list[i] = formatting(result_string_list[i])
+            result_string_list[i] = safety_formatting(result_string_list[i])
 
         # Square Brackets #####################
         for each in result_string_list:
@@ -1419,12 +1440,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
         string = ""
         for each in result_list:
             string += (each.__str__() + " ")
-        string = formatting(string)
-        string = string.replace(" - ", "substitute_text")
-        string = string.replace("- ", "-")
-        string = string.replace("substitute_text", " - ")
-        string = string.replace("--", "+")
-        string = string.replace("! ", "!")
+        string = safety_formatting(string)
         log += f"After Replacement: {string}\n"
 
         with open(path_to_log, "w") as file:
@@ -1478,24 +1494,31 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             log += "hasCalledUponReverseOctalConverter\n"
         else:
             log += "proceedingWithDefaultBase\n"
+        
 
         if interactive:
-            print(f"< REPLY >: {reply}")
-            log += f"UCalc Replied: {along_with_answer} = {reply} @ {ctime()}\n"
-            ending_time = time()
-            total_time = ending_time - starting_time
-            log += f"[END] in {total_time}"
+            if factorise:
+                os.system(f"{path_to_f} {reply} 1")
+            else:
+                print(f"< REPLY >: {reply}")
+                log += f"UCalc Replied: {along_with_answer} = {reply} @ {ctime()}\n"
+                ending_time = time()
+                total_time = ending_time - starting_time
+                log += f"[END] in {total_time}"
             with open(path_to_log, "w") as file:
                 file.write(log)
             main()
 
         else:
-            print(f"UCalc Replies: {reply}")
-            log += f"UCalc Replied: {along_with_answer} = {reply} @ {ctime()}\n"
-            ending_time = time()
-            total_time = ending_time - starting_time
-            log += f"[END] in {total_time}"
-            log += f"UCalc was liberated @ {ctime()} only employed for {total_time}"
+            if factorise:
+                os.system(f"{path_to_f} {reply} 0")
+            else:
+                print(f"UCalc Replies: {reply}")
+                log += f"UCalc Replied: {along_with_answer} = {reply} @ {ctime()}\n"
+                ending_time = time()
+                total_time = ending_time - starting_time
+                log += f"[END] in {total_time}"
+                log += f"UCalc was liberated @ {ctime()} only employed for {total_time}"
         with open(path_to_log, "w") as file:
             file.write(log)
 
