@@ -16,7 +16,6 @@
 ### Fixed path-to-log bug in deb package
   * Fixed the bug that causes ucalcLog.txt
     to be made on the current working directory
-  * Added creating COPYING in /usr/share/doc/ucalc/
 
 ## Version 4.0, May 26 2020, Major:
 ### Added interactive mode
@@ -25,12 +24,13 @@
   * Fixed the bug that makes UCalc not
     consider an asterisk as multiplication
 ### Created debian package
-  * Created deb package for version 4.0
+  * Created Debian package for version 4.0
 
 ## Version 4.1, May 30 2020, Minor:
 ### Added support for Windows
   * Can run on Windows from the ucalc source file
   * Also can be run by using python3
+  * From 4.3 in the future, requires GNU GCC
 ### Added interactive mode help
   * Added help for interactive mode in the
     the global help 
@@ -48,3 +48,12 @@
 ### Instant log writer
   * Added instatn log writing after each question
     in interactive mode
+
+## Version 4.3, July 11 2020, Major:
+### Integration of Factoriser
+  * Finding factors of a number feature has been
+    added through the integration of Factoriser
+    into UCalc
+### Factorial Symbol Problem
+  * Factorial symbols are now entered after the
+    number, the error has been fixed
