@@ -31,6 +31,8 @@ def main():
         path_to_log = "ucalcLog.txt" 
         path_to_f = "./f"
         path_to_f_c = "f.c"
+        path_to_xy = "./xy"
+        path_to_xy_c = "xy.c"
         version = "v4.3"
 
         version_view = f"""
@@ -92,7 +94,7 @@ while 2+[2+{"{5+5}"}] is the best practice and will yield correct answers.
 ---------------------------------------------------------------------------
 Factorials:
     There are two ways to tell UCalc to find a number's factorial.
-    First is to add "!" to beginning of a number.
+    First is to add "!" to ending of a number.
     Though, you may have add a  backslash before the exclamation mark
     as it is a special character.
     Another, will be to add "?" to ending of a number as it avoids
@@ -128,11 +130,38 @@ Cube-roots:
 ---------------------
     F A C T O R S      
 ---------------------
-UCalc also provides for finding factors of a given number.
-Similar the many extra inputs, which happens to be mentioned
+UCalc also provides for fetching factors of a given number.
+Similar to the many extra inputs, which happens to be mentioned
 below extra inputs section, the number is to end with either
 '.factor' or '.f'
-Exempli gratia, 4.f wil return 1, 2, 4
+Exempli gratia, 4.factor wil return 1, 2, 4
+We can also do arithmetic operation before finding the factors,
+2+2.factor will return 1, 2, 4
+
+---------------------------------------------
+    P R O D U C T - S U M   F A C T O R S   
+---------------------------------------------
+UCalc is shipped with XY, a product-sum factor finder.
+Since, XY requires, at the least, three inputs, which they
+are will be told further down, the method of calling used is
+known as the Double-Colon-Call. First, you have to enter
+the type of Double-Colon function you are calling, here,
+it is the product-sum factor finder, which has, undoubtedly,
+the name 'xy'. XY requires three arguments and no more.
+They are, with respect to order, the product, the sum and
+the counter. The product and the sum are obvious but the counter
+may not be. The counter determines upto how much to count to
+beginning from one.
+Exempli gratia,
+xy::100::25::100 will return 20 and 5.
+Since, the larget among the result is 20, all the numbers
+thence was unnecassary even though the XY will stop when
+it finds a factor. Now here,
+xy::100::25::10, will not return a factor since it is 
+larger than the counter specified.
+Above, we have called XY and immediately entered
+double-colons and every argument has to be separated by
+double colons, hence, the name Double-Colon-Call.
 
 =====================================
 R U L E S  O F  C A L C U L A T I O N
@@ -140,7 +169,7 @@ R U L E S  O F  C A L C U L A T I O N
 UCalc, by default and implicitly, uses the rule of BODMAS.
 It can also use the rule of precedence though it has to be explicitly
 mentioned as it falls under the category of extra inputs.
-Thus, an expression followed by '.precede' will prompt the UCalc to use
+Thus, an expression followed by '.precede' will prompt UCalc to use
 the rule of precedence.
 Exempli gratia, 5-4x2 will return -3, but,
 5-4x2.precede will return 2
@@ -154,7 +183,7 @@ Exempli gratia, 2--2 or 2-[-2] is wrong and it will cause errors.
            2-~2 is the right way and will return the aniticipated value,
            id est, 0
 Simply a minus sign is considered an arithmetic operator to UCalc,
-if only a value begin with ~, UCalc will consider it negative.
+if only a value begins with ~, UCalc will consider it negative.
 
 ======================
 E X T R A  I N P U T S
@@ -206,6 +235,10 @@ Base-64 converter has to be used with caution as it is custom made for
 UCalc and value representation may differ heavily with other converters
 and thus, it may no be reverse convertible with other converters, though,
 UCalc also has built-in reverse converters for all of the above converters.
+Converter will accept floating point values or a number that contains Euler's.
+The best way to such is to use round, ceil or floor extra input with the
+converters.
+
 ----------------------------------------
    R E V E R S E  C O N V E R T E R S
 ----------------------------------------
@@ -786,15 +819,14 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                 if "?" in some_list[each] or "!" in some_list[each]:
                     some_list[each] = factorial(some_list[each])
                     log += f"Factorial: {args}\n"
-
                 elif some_list[each].startswith("_") or some_list[each].startswith("√"):
                     some_list[each] = square_root(some_list[each])
                     log += f"SquareRoot: √{args}\n"
                 elif some_list[each].startswith(":"):
                     some_list[each] = cube_root(some_list[each])
                     log += f"CubeRoot: {args}\n"
-                    with open(path_to_log, "w") as file:
-                        file.write(log)
+                with open(path_to_log, "w") as file:
+                    file.write(log)
 
             for each in some_list:
                 to_be_num_string += each + " "
@@ -1004,8 +1036,11 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                     one_value = int(one_value_list[-1])
                     two_value = int(two_value_list[0])
                 except ValueError:
-                    one_value = float(one_value_list[-1])
-                    two_value = float(two_value_list[0])
+                    try:
+                        one_value = float(one_value_list[-1])
+                        two_value = float(two_value_list[0])
+                    except ValueError:
+                        exit(f"UCalc Excuses: Some non-calculable value (\"{num}\") has been given.")
 
                 add_value = one_value + two_value
                 two_value_list.remove(two_value_list[0])
@@ -1118,8 +1153,8 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                             each = float(each)
                         except ValueError:
                             exit(f"""
-    UCalc Excuses: A non-calculable value({each})
-    has been given to me. Try --help for more information.""")
+UCalc Excuses: A non-calculable value({each})
+has been given to me. Try --help for more information.""")
                     numbers_list.append(each)
                     args.remove(each.__str__())
                     log += f"OperaPrint: {args, numbers_list}\n"
@@ -1243,6 +1278,39 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             temporary_string = interactive_input_receiver(temporary_string)
         
         # Checking extra inputs from the user
+
+        # There will be a space between x and y because of
+        # operator identification
+        log += "### Passing on labour to XY factoriser ###\n"
+        # In interactive the oprators are formatted before it is checked
+        # for special inputs, thus, x y::
+        called_xy_factoriser = False
+        if "xy::" in temporary_string or "x y::" in temporary_string:
+            if not os.path.exists("xy"):
+                log += "### XY was not already compiled - first compilation ###\n"
+                os.system(f"gcc {path_to_xy_c} -o {path_to_xy} -g -lgmp")
+            temporary_string = temporary_string.replace("xy::", "")
+            temporary_string = temporary_string.replace("x y::", "")
+            find_xy_list = temporary_string.split("::")
+            if len(find_xy_list) < 3:
+                print("""
+UCalc Excuses: There is insuffient arguments for finding the Product-Sum factor.
+UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
+""")
+                exit()
+            if len(find_xy_list) > 3:
+                print("UCalc Excuses: Redundant arguments while calling Product-Sum Factoriser.")
+                exit()
+            if interactive: 
+                os.system(f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 1")
+            else:
+                os.system(f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 0")
+
+            with open("ucalcLog.txt", "w") as file:
+                file.write(log)
+            called_xy_factoriser = True
+
+
         final_touch = ""
         precedence = False
         converter = "none"
@@ -1270,12 +1338,15 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             for each in types_of_converter:
                 temporary_string = temporary_string.replace(each, "")
             return temporary_string
+        
 
+            
+        
         if ".base64" in temporary_string:
             temporary_string = temporary_string.replace(".base64", "")
             converter = "64"
         # In interactive mode, 'hex' becomes 'he x' due to
-        # interactive mode so, =>
+        # So, =>
         elif ".hex" in temporary_string or ".he x" in temporary_string:
             temporary_string = temporary_string.replace(".hex", "")
             temporary_string = temporary_string.replace(".he x", "")
@@ -1295,7 +1366,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             try:
                 prompt_reply = Converters().reverse_base64(temporary_string)
             except ValueError:
-                exit("UCalc Excuses: You had either tried to do arithmetic operations or entereinvalid base64 value.")
+                exit("UCalc Excuses: You had either tried to do arithmetic operations or entered invalid base64 value.")
             log += "madeABaseSixtyFourPromptReply"
             log += ctime()
             with open(path_to_log, "w") as file:
@@ -1500,8 +1571,9 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             if factorise:
                 os.system(f"{path_to_f} {reply} 1")
             else:
-                print(f"< REPLY >: {reply}")
-                log += f"UCalc Replied: {along_with_answer} = {reply} @ {ctime()}\n"
+                if not called_xy_factoriser:
+                    print(f"< REPLY >: {reply}")
+                    log += f"UCalc Replied: {along_with_answer} = {reply} @ {ctime()}\n"
                 ending_time = time()
                 total_time = ending_time - starting_time
                 log += f"[END] in {total_time}"
@@ -1513,8 +1585,9 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             if factorise:
                 os.system(f"{path_to_f} {reply} 0")
             else:
-                print(f"UCalc Replies: {reply}")
-                log += f"UCalc Replied: {along_with_answer} = {reply} @ {ctime()}\n"
+                if not called_xy_factoriser:
+                    print(f"UCalc Replies: {reply}")
+                    log += f"UCalc Replied: {along_with_answer} = {reply} @ {ctime()}\n"
                 ending_time = time()
                 total_time = ending_time - starting_time
                 log += f"[END] in {total_time}"
