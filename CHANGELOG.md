@@ -57,3 +57,8 @@
 ### Factorial Symbol Problem
   * Factorial symbols are now entered after the
     number, the error has been fixed
+
+## Version 4.4, July 17 2020, Major:
+### Integration of XY
+  * Find product-sum factor feature has been
+    added through integration XY into UCalc
