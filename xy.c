@@ -5,6 +5,7 @@
 #include <string.h>
 
 void main(int argc, char **argv) {
+    FILE* log = fopen("ucalcLogXY.txt", "w");
     if(argc < 5) {
         puts("\nUCalc Excuses: There is insuffient arguments for finding the Product-Sum factor.\n"\
              "UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100\n");
@@ -24,15 +25,16 @@ void main(int argc, char **argv) {
     strcpy(char_c, argv[3]);
     bool beNegative = false;
     bool interactive = strcmp(argv[4], "1") == 0 ? true : false;
+    fprintf(log, "N1S: %s  N2S: %s  CS: %s\n", char_product, char_sum, char_c);
     /* Acquiring N1 */
     for(i = strlen(char_product); i > 0; i--) {
         temporaryCharNumber = char_product[i - 1];
         mpz_set_si(toAdd, atoi(&temporaryCharNumber));
         if(mpz_cmp_ui(toAdd, 0) == 0) {
-            if(temporaryCharNumber == '-') {
+            if(temporaryCharNumber == '-' || temporaryCharNumber == '~') {
                 beNegative = true;
-            }else if(temporaryCharNumber == '0') {/*PASS*/} else {
-                puts("UCalc Excuses: One of your input values was not a number.");
+            } else if(temporaryCharNumber == '0') {/*PASS*/} else {
+                puts("UCalc Excuses: Non-numeric product");
                 exit(0);
             }
         }
@@ -44,6 +46,7 @@ void main(int argc, char **argv) {
         mpz_neg(product, product);
         beNegative = false;
     }
+    gmp_fprintf(log, "Product: %Zd\n", product);
     mpz_init(sum);
     mpz_set_ui(placeValue, 1);
     /* Acquiring N2 */
@@ -51,10 +54,10 @@ void main(int argc, char **argv) {
         temporaryCharNumber = char_sum[i - 1];
         mpz_set_si(toAdd, atoi(&temporaryCharNumber));
         if(mpz_cmp_ui(toAdd, 0) == 0) {
-            if(temporaryCharNumber == '-') {
+            if(temporaryCharNumber == '-' || temporaryCharNumber == '~') {
                 beNegative = true;
-            }else if(temporaryCharNumber == '0') {/*PASS*/} else {
-                puts("UCalc Excuses: One of your input values was not a number.");
+            } else if(temporaryCharNumber == '0') {/*PASS*/} else {
+                puts("UCalc Excuses: Non-numeric sum.");
                 exit(0);
             }
         }
@@ -66,6 +69,7 @@ void main(int argc, char **argv) {
         mpz_neg(sum, sum);
         beNegative = false;
     }
+    gmp_fprintf(log, "Sum: %Zd\n", sum);
     mpz_init(c);
     mpz_set_ui(placeValue, 1);
     /* Acquiring Counter */
@@ -73,11 +77,14 @@ void main(int argc, char **argv) {
         temporaryCharNumber = char_c[i - 1];
         mpz_set_si(toAdd, atoi(&temporaryCharNumber));
         if(mpz_cmp_ui(toAdd, 0) == 0) {
-            if(temporaryCharNumber == '-') {
+            if(temporaryCharNumber == '-' || temporaryCharNumber == '~') {
                 puts("UCalc Excuses: Counter value can never be negative.");
                 exit(0);
-            }else if(temporaryCharNumber == '0') {/*PASS*/} else {
-                puts("UCalc Excuses: One of your input values was not a number.");
+            } else if(temporaryCharNumber == '0' && strlen(char_c) == 1) {
+                puts("UCalc Excuses: Counter value can never be zero.");
+                exit(0);
+            } else if(temporaryCharNumber == '0') {/*PASS*/} else {
+                puts("UCalc Excuses: Counter value must be a number.");
                 exit(0);
             }
         }
@@ -85,7 +92,8 @@ void main(int argc, char **argv) {
         mpz_add(c, c, toAdd);
         mpz_mul_ui(placeValue, placeValue, 10);
     }
-    mpz_clears(placeValue);
+    gmp_fprintf(log, "Counter: %Zd\n", c);
+    mpz_clear(placeValue);
     //printf("N1S: %s  N2S: %s  CS: %s\n", char_product, char_sum, char_c);
     //gmp_printf("N1: %Zd  N2: %Zd  C: %Zd\n", product, sum, c);
     mpz_t counter_i, counter_j;
@@ -147,7 +155,8 @@ void main(int argc, char **argv) {
     if(!foundFactor) {
         if(interactive) puts("\r< REPLY >: Found None.");
         else puts("\rUCalc Replies: Found None.");
-    }
+        fprintf(log, "No Value Found\n");
+    } else fprintf(log, "Value Found\n");
     mpz_clear(counter_i);
     mpz_clear(counter_j);
     mpz_clear(multiValue);
@@ -156,4 +165,5 @@ void main(int argc, char **argv) {
     mpz_clear(product);
     mpz_clear(c);
     mpz_clear(toAdd);
+    fclose(log);
 }
