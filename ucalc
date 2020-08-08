@@ -733,29 +733,38 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                         else:
                             pass
                 print("UCalc warns: This base sixty four conversion may not be reverse convertible in other programs."
-                        "\n ***** same conversion values used by YouTube's video identities  *****")
+                        "\n *** same conversion values used by YouTube's video identities  ***")
                 return valum_final
 
 
         def safety_formatting(string):
             string = string.strip()
+            string = string.replace("~ ", "~")
             string = string.replace("_ ", "_")
             string = string.replace(" _ ", "_")
             string = string.replace(" - ", "substitute_text")
             string = string.replace("- ", "-")
             string = string.replace("substitute_text", " - ")
             string = string.replace("--", "+")
+            string = string.replace("~~", "+")
+            string = string.replace("++", "+")
             string = string.replace(" ?", "?")
             string = string.replace(" !", "!")
             return string
+        
+        def formatted_sqrt(num):
+            try: num = int(num)
+            except ValueError:
+                exit("UCalc excuses: Can only find square roots of integers (real numbers).")
+            pass
+            
         
         def cube_root(num):
             global log
             with open(path_to_log, "w") as file:
                         file.write(log)
             num = num.replace(":", "")
-            try:
-                num = int(num)
+            try: num = int(num)
             except ValueError:
                 exit(f"UCalc Excuses: Some non-calculable value('{num}') has been given to me.")
             value = math.ceil(num ** 0.333333333333333)
@@ -1142,7 +1151,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
 
             with open(path_to_log, "w") as file:
                 file.write(log)
-
+            
             for each in args:
                 log += f"{args} {numbers_list}\n"
                 if each not in operator_list:
@@ -1152,14 +1161,21 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                         try:
                             each = float(each)
                         except ValueError:
-                            exit(f"""
+                            if each.startswith("~"):
+                                compensation_each = each
+                                each = each.replace("~", "-")
+                                each = int(each)
+                            else:
+                                exit(f"""
 UCalc Excuses: A non-calculable value({each})
 has been given to me. Try --help for more information.""")
                     numbers_list.append(each)
-                    args.remove(each.__str__())
+                    try: args.remove(each.__str__())
+                    except ValueError: args.remove(compensation_each.__str__())
                     log += f"OperaPrint: {args, numbers_list}\n"
             log += f"{args} {numbers_list}\n"
             log += f"Args 'n' nums{args, numbers_list}"
+
 
             # Calculation Block
             while True:
@@ -1303,9 +1319,10 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
                 exit()
             if interactive: 
                 os.system(f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 1")
+                log += f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 1"
             else:
                 os.system(f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 0")
-
+                log += f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 0"
             with open("ucalcLog.txt", "w") as file:
                 file.write(log)
             called_xy_factoriser = True
@@ -1315,6 +1332,7 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
         precedence = False
         converter = "none"
         factorise = False
+        negate = False
         if ".round" in temporary_string:
             temporary_string = temporary_string.replace(".round", "")
             final_touch = "round"
@@ -1327,6 +1345,9 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
         if ".precede" in temporary_string:
             temporary_string = temporary_string.replace(".precede", "")
             precedence = True
+        if ".neg" in temporary_string:
+            temporary_string = temporary_string.replace(".neg", "")
+            negate = True
 
         types_of_converter = [".base64", ".hex", ".bin", ".oct", ".fromhex", ".frombin",
                               ".fromoct"]
@@ -1409,18 +1430,12 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
         temp_string = ""
         for each in yet_another_list:
             temp_string += each + " "
-            temp_string = temp_string.replace("]", "|@")
-            temp_string = temp_string.replace("[", "|@#")
-            """
-            In the above line of code, the ] is constituted with |@
-            but [ is constituted with |@# because after getting split with
-            '|', it again, is grouped into a list after calculating the inner brackets
-            or { and }, to receive a correct differentiation after splitting, both are given
-            '@' but to recognise whether the item from list was in a bracket # has been
-            utilised.
-            """
-            temp_string = temp_string.replace("{", "|&")
+            temp_string = temp_string.replace("]", "|")
+            temp_string = temp_string.replace("[", "|")
+            temp_string = temp_string.replace("{", "|")
             temp_string = temp_string.replace("}", "|")
+            temp_string = temp_string.replace("(", "|")
+            temp_string = temp_string.replace(")", "|")
 
             # Special Values
             temp_string = temp_string.replace("pi", (22 / 7).__str__())  # Pi
@@ -1434,12 +1449,18 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
             temp_string = temp_string.replace("F", (9.649 * 10 ** 4).__str__()) # Faraday Constant
             temp_string = temp_string.replace("C", (2.9979 * 10 ** 8).__str__()) # Speed Of Light In Vacuum
 
-            # Negative Value Argument Receiver
-            temp_string = temp_string.replace("~", "-")
-
+        # Very First Format Encounter
+        temp_string = temp_string.replace("-", "+ ~")
+        temp_string = safety_formatting(temp_string)
         args = temp_string.split("|")
         for each in args:
             each = each.strip()
+        try:
+            while True:
+                args.remove("")
+                args.remove(" ")
+        except ValueError:
+            pass
         log += f"{args}\n"
 
         result_list = []
@@ -1449,15 +1470,19 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
         for each in args:
             each = each.strip()
             log += f"{each}\n"
-            if "&" in each:
+            if "" in each:
                 crlybrkts = "{}"
                 log += f"True{crlybrkts}: {each}\n"
+                if each.endswith("+ ~"):
+                    each += "id-txt"
+                    each = each.replace("+ ~id-txt", "+~")
                 if not precedence:
-                    returned_value = calculator_bodmas(each.replace("&", "").strip())
+                    returned_value = calculator_bodmas(each.replace("", "").strip())
                 else:
-                    returned_value = calculator_precedence(each.replace("&", "").strip().split(" "))
+                    returned_value = str( calculator_precedence( each.replace("", "").strip().split(" ") ) )
                 returned_value = returned_value.replace("- ", "")
-                log += f"Returned: {returned_value}\n"
+                returned_value = returned_value.replace("-", "~")
+                log += f"Returned: ({returned_value})\n"
                 result_list.append(returned_value)
             else:
                 result_list.append(each)
@@ -1473,55 +1498,57 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
         log += f"{result_list}\n"
 
         for each in result_list:
-            string += (each.__str__() + "$")
+            string += (each.__str__() + "")
         string = string.strip()
-        #
+        for each in misc_list:
+            string = string.replace(each, f" {each} ")
+
         string = string.replace(" - ", "substitute_text")
         string = string.replace("substitute_text", " - ")
         string = string.replace("--", "+")
         log += f"After Skirmish: {string}\n"
 
-        result_list = []
-
-        # Here result_string_list gets split with @
-        result_string_list = string.split("@")
-        log += f"ResultStringList: {result_string_list}\n"
-
-        for i in range(len(result_string_list)):
-            result_string_list[i] = result_string_list[i].replace("$$", "$")
-            result_string_list[i] = result_string_list[i].replace("$", " ")
-            result_string_list[i] = safety_formatting(result_string_list[i])
-
-        # Square Brackets #####################
-        for each in result_string_list:
-            each = each.strip()
-            if "#" in each:
-                log += f"True[]: {each}\n"
-                if not precedence:
-                    returned_value = calculator_bodmas(each.replace("#", "").strip())
-                else:
-                    returned_value = calculator_precedence(each.replace("#", "").strip().split(" "))
-
-                log += f"Returned: {returned_value}\n"
-                result_list.append(returned_value)
-            else:
-                result_list.append(each)
-
-        log += f"Before Replacement{result_list}\n"
-        string = ""
-        for each in result_list:
-            string += (each.__str__() + " ")
-        string = safety_formatting(string)
-        log += f"After Replacement: {string}\n"
-
-        with open(path_to_log, "w") as file:
-            file.write(log)
-
+#        result_list = []
+#
+#        # Here result_string_list gets split with @
+#        result_string_list = string.split("@")
+#        log += f"ResultStringList: {result_string_list}\n"
+#
+#        for i in range(len(result_string_list)):
+#            result_string_list[i] = result_string_list[i].replace("$$", "$")
+#            result_string_list[i] = result_string_list[i].replace("$", " ")
+#            result_string_list[i] = safety_formatting(result_string_list[i])
+#
+#        # Square Brackets #####################
+#        for each in result_string_list:
+#            each = each.strip()
+#            if "#" in each:
+#                log += f"True[]: {each}\n"
+#                if not precedence:
+#                    returned_value = calculator_bodmas(each.replace("#", "").strip())
+#                else:
+#                    returned_value = calculator_precedence(each.replace("#", "").strip().split(" "))
+#
+#                log += f"Returned: {returned_value}\n"
+#                result_list.append(returned_value)
+#            else:
+#                result_list.append(each)
+#
+#        log += f"Before Replacement{result_list}\n"
+#        string = ""
+#        for each in result_list:
+#            string += (each.__str__() + " ")
+#        string = safety_formatting(string)
+#        log += f"After Replacement: {string}\n"
+#
+#        with open(path_to_log, "w") as file:
+#            file.write(log)
+#
         # Implementing extra input from the user
         if not precedence:
             reply = calculator_bodmas(string)
         else:
-            reply = calculator_precedence(string.split(" "))
+            reply = str( calculator_precedence( string.split(" ") ) )
 
         if final_touch == "round":
             reply = round(float(reply))
@@ -1534,6 +1561,7 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
             log += "floorHasBeenCalled;fromPriorityThree\n"
         else:
             log += "noSpecialInputUsed;fromNull\n"
+        if negate: reply = str( (int(reply) - ( int(reply) * 2) ) )
 
         conversion = Converters()
         if converter == "64":
@@ -1566,7 +1594,7 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
         else:
             log += "proceedingWithDefaultBase\n"
         
-
+        reply = safety_formatting(reply)
         if interactive:
             if factorise:
                 os.system(f"{path_to_f} {reply} 1")
