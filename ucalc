@@ -33,6 +33,7 @@ def main():
         path_to_f_c = "f.c"
         path_to_xy = "./xy"
         path_to_xy_c = "xy.c"
+        path_to_ans = "ans"
         version = "v4.3"
 
         version_view = f"""
@@ -1187,7 +1188,7 @@ has been given to me. Try --help for more information.""")
                         numbers_list.remove(numbers_list[0])
                         numbers_list.insert(0, value)
                         args.remove(args[0])
-                    elif args[0] == "-":
+                    elif args[0] == "-" or args[0] == "+~":
                         value = numbers_list[0] - numbers_list[1]
                         numbers_list.remove(numbers_list[0])
                         numbers_list.remove(numbers_list[0])
@@ -1297,11 +1298,11 @@ has been given to me. Try --help for more information.""")
 
         # There will be a space between x and y because of
         # operator identification
-        log += "### Passing on labour to XY factoriser ###\n"
         # In interactive the oprators are formatted before it is checked
         # for special inputs, thus, x y::
         called_xy_factoriser = False
         if "xy::" in temporary_string or "x y::" in temporary_string:
+            log += "### Passing on labour to XY factoriser ###\n"
             if not os.path.exists("xy"):
                 log += "### XY was not already compiled - first compilation ###\n"
                 os.system(f"gcc {path_to_xy_c} -o {path_to_xy} -g -lgmp")
@@ -1345,6 +1346,10 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
         if ".precede" in temporary_string:
             temporary_string = temporary_string.replace(".precede", "")
             precedence = True
+            bracket_types = ("[", "]", "(", ")", "{", "}")
+            for each in bracket_types:
+                if each in temporary_string:
+                    exit("UCalc Excuses: There is no point in usage of brackets with rule of precedence.")
         if ".neg" in temporary_string:
             temporary_string = temporary_string.replace(".neg", "")
             negate = True
@@ -1448,6 +1453,12 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
             temp_string = temp_string.replace("k", (1.38 * 10 ** -23).__str__()) # Boltzmann Constant
             temp_string = temp_string.replace("F", (9.649 * 10 ** 4).__str__()) # Faraday Constant
             temp_string = temp_string.replace("C", (2.9979 * 10 ** 8).__str__()) # Speed Of Light In Vacuum
+            
+            # Last Reply Value
+            with open(path_to_ans, "r") as file: 
+                ans = file.read()
+                temp_string = temp_string.replace("ans", ans)
+
 
         # Very First Format Encounter
         temp_string = temp_string.replace("-", "+ ~")
@@ -1605,8 +1616,8 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
                 ending_time = time()
                 total_time = ending_time - starting_time
                 log += f"[END] in {total_time}"
-            with open(path_to_log, "w") as file:
-                file.write(log)
+            with open(path_to_log, "w") as file: file.write(log)
+            with open(path_to_ans, "w") as file: file.write(reply)
             main()
 
         else:
@@ -1620,8 +1631,8 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
                 total_time = ending_time - starting_time
                 log += f"[END] in {total_time}"
                 log += f"UCalc was liberated @ {ctime()} only employed for {total_time}"
-        with open(path_to_log, "w") as file:
-            file.write(log)
+                with open(path_to_ans, "w") as file: file.write(reply)
+        with open(path_to_log, "w") as file: file.write(log)
 
     except KeyboardInterrupt:
         ending_time = time()
