@@ -1272,7 +1272,7 @@ has been given to me. Try --help for more information.""")
             in_num_list = temp_nums.split(" ")
             for each in in_num_list:
                 if not each == "": in_brckt *= int(each)
-            if in_brckt == 1: return out_brckt.strip()
+            if in_brckt == 1: return str(out_brckt).strip()
             else: return (f"{out_brckt}·√{in_brckt}").strip()
 
         # misc_list for creating spaces before and after for chars inside the list
