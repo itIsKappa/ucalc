@@ -1215,6 +1215,33 @@ has been given to me. Try --help for more information.""")
             return str(numbers_list[0])
 
 
+        # Bracket Handler Function
+        def brackets(string):
+            global log
+            log += f"Entered Bracket Function with ({string})\n"
+            string = string.replace("[", "|@")
+            string = string.replace("]", "$|")
+            log += f"Changed ({string}) and ({string.split('[')})\n"
+            exists_brackets = True
+            while True:
+                if not "|" in string: break
+                sep_list = string.split("|")
+                for i in range( len(sep_list) ):
+                    if sep_list[i].startswith("@") and sep_list[i].endswith("$"):
+                        sep_list[i] = sep_list[i].replace("@", "")
+                        sep_list[i] = sep_list[i].replace("$", "")
+                        sep_list[i] = sep_list[i].replace("|", "")
+                        if precedence:
+                            sep_list[i] = calculator_precedence(sep_list[i].strip().split(" "))
+                        else: sep_list[i] = calculator_bodmas(sep_list[i].strip())
+                        sep_list[i] = sep_list[i].replace("-", "~")
+                        log += f"Returned: ({sep_list[i]})\n"
+                string = ""
+                for each in sep_list: string += each
+                string = string.replace("@", "|@")
+                string = string.replace("$", "$|")
+            return string
+
         # misc_list for creating spaces before and after for chars inside the list
         misc_list = ["+", "-", "/", "%", "^", "x", "*", "·", "{", "}", "[", "]"]
         # First item from sys.argv is removed for it is the name of program
@@ -1322,6 +1349,7 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
             else:
                 os.system(f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 0")
                 log += f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 0"
+            temporary_string = "ans"
             with open("ucalcLog.txt", "w") as file:
                 file.write(log)
             called_xy_factoriser = True
@@ -1402,7 +1430,6 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
         elif ".fromter" in temporary_string:
             temporary_string = temporary_string.replace(".fromter", "")
             converter = "fromter"
-        
         if ".factor" in temporary_string or ".f" in temporary_string:
             factorise = True
             temporary_string = temporary_string.replace(".factor", "")
@@ -1457,43 +1484,9 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
         temp_string = temp_string.replace("-", "+ ~")
         temp_string = temp_string.replace("e+ ~", "e-")
         temp_string = safety_formatting(temp_string)
-
-        # Bracket Handler Function
-        def brackets(string):
-            global log
-            string = string.replace("[", "[@")
-            exists_brackets = True
-            while True:
-                if not "]" in string or not "[" in string: break
-                sep_list = string.split("[")
-                for i in range( len(sep_list) ):
-                    if sep_list[i].startswith("@") and sep_list[i].endswith("]"):
-                        bracket_count = sep_list[i].count("]") - 1
-                        sep_list[i] = sep_list[i].replace("@", "")
-                        sep_list[i] = sep_list[i].replace("]", "")
-                        if precedence:
-                            sep_list[i] = calculator_precedence(sep_list[i].strip().split(" "))
-                        else: sep_list[i] = calculator_bodmas(sep_list[i].strip())
-                        sep_list[i] = sep_list[i].replace("-", "~")
-                        for each in range(bracket_count): sep_list[i] += "]"
-                        log += f"Returned: ({sep_list[i]})\n"
-                string = ""
-                for each in sep_list: string += each
-                string = string.replace("@", "[@")
-            return string
-
-            """ The calculator function of the program ignores the BODMAS rule
-                but brackets are minded before
-                calling this function to wrap expressions
-                Example:
-                5-2*2 or 5-2x2
-                The above expression must yield the answer as 1.
-                Without BODMAS, it will yield 6
-                So, one can wrap the '2x2' inside brackets, thus the expression will be-
-                5-[2*2] or 5-[2x2]
-                hence, it will provide same answer as that of with BODMAS rule"""
         temp_string = brackets(temp_string)
         string = temp_string
+        log += "Trekked Brackets\n"
         with open(path_to_log, "w") as file:
             file.write(log)
 
