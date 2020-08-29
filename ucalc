@@ -758,13 +758,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             string = string.replace(" !", "!")
             return string
         
-        def formatted_sqrt(num):
-            try: num = int(num)
-            except ValueError:
-                exit("UCalc excuses: Can only find square roots of integers (real numbers).")
-            pass
             
-        
         def cube_root(num):
             global log
             with open(path_to_log, "w") as file:
@@ -833,13 +827,13 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             for each in range(len(some_list)):
                 if "?" in some_list[each] or "!" in some_list[each]:
                     some_list[each] = factorial(some_list[each])
-                    log += f"Factorial: {args}\n"
+                    log += f"Factorial: {some_list[each]}\n"
                 elif some_list[each].startswith("_") or some_list[each].startswith("√"):
                     some_list[each] = square_root(some_list[each])
-                    log += f"SquareRoot: √{args}\n"
+                    log += f"SquareRoot: √{some_list[each]}\n"
                 elif some_list[each].startswith(":"):
                     some_list[each] = cube_root(some_list[each])
-                    log += f"CubeRoot: {args}\n"
+                    log += f"CubeRoot: {some_list[each]}\n"
                 with open(path_to_log, "w") as file:
                     file.write(log)
 
@@ -1241,9 +1235,48 @@ has been given to me. Try --help for more information.""")
                 string = string.replace("@", "|@")
                 string = string.replace("$", "$|")
             return string
+        
+        def formatted_square(num):
+            try: num = int(num)
+            except ValueError: exit("UCalc Excuses: Cannot find squares of non-integer numbers.")
+            def eratos(num):
+                sieve_list = []
+                for each in range(num + 1): sieve_list.append(each)
+                sieve_list.remove(1)
+                sieve_list.remove(0)
+                for i in sieve_list:
+                    for each in sieve_list:
+                        if not each == i:
+                            if each % i == 0: sieve_list.remove(each)
+                return sieve_list
+
+            primes = eratos(num)
+            i = 0
+            temp_nums = ""
+            out_brckt = 1
+            while i != len(primes):
+                if num % primes[i] == 0:
+                    num /= primes[i]
+                    temp_nums += str(primes[i]) + " "
+                    i = 0
+                    continue
+                i += 1
+
+            for each in primes:
+                pair_count = temp_nums.count(f"{each} {each}")
+                temp_nums = temp_nums.replace(f"{each} {each}", "")
+                out_brckt *= each ** pair_count
+
+            in_brckt = 1
+            temp_nums = temp_nums.strip()
+            in_num_list = temp_nums.split(" ")
+            for each in in_num_list:
+                if not each == "": in_brckt *= int(each)
+            if in_brckt == 1: return out_brckt.strip()
+            else: return (f"{out_brckt}·√{in_brckt}").strip()
 
         # misc_list for creating spaces before and after for chars inside the list
-        misc_list = ["+", "-", "/", "%", "^", "x", "*", "·", "{", "}", "[", "]"]
+        misc_list = ["+", "-", "/", "%", "^", "x", "*", "·", "{", "}", "[", "]", "(", ")"]
         # First item from sys.argv is removed for it is the name of program
         try:
             sys.argv.remove(sys.argv[0])
@@ -1358,6 +1391,7 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
         precedence = False
         converter = "none"
         factorise = False
+        frmt_sqrt = False
         negate = False
         if ".round" in temporary_string:
             temporary_string = temporary_string.replace(".round", "")
@@ -1371,6 +1405,9 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
         if ".precede" in temporary_string:
             temporary_string = temporary_string.replace(".precede", "")
             precedence = True
+        if ".sqrt" in temporary_string:
+            temporary_string = temporary_string.replace(".sqrt", "")
+            frmt_sqrt = True
         if ".neg" in temporary_string:
             temporary_string = temporary_string.replace(".neg", "")
             negate = True
@@ -1442,6 +1479,11 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
         temporary_string = extra_input_insurance(temporary_string)
 
         along_with_answer = temporary_string
+        
+        # Last Reply Value
+        with open(path_to_ans, "r") as file: 
+            ans = file.read()
+            temporary_string = temporary_string.replace("ans", ans)
 
         for each in misc_list:
             temporary_string = temporary_string.replace(each, f" {each} ")
@@ -1473,12 +1515,6 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
             temp_string = temp_string.replace("k", (1.38 * 10 ** -23).__str__()) # Boltzmann Constant
             temp_string = temp_string.replace("F", (9.649 * 10 ** 4).__str__()) # Faraday Constant
             temp_string = temp_string.replace("c", (2.9979 * 10 ** 8).__str__()) # Speed Of Light In Vacuum
-            
-            # Last Reply Value
-            with open(path_to_ans, "r") as file: 
-                ans = file.read()
-                temp_string = temp_string.replace("ans", ans)
-
 
         # Very First Format Encounter
         temp_string = temp_string.replace("-", "+ ~")
@@ -1546,6 +1582,9 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
             log += "hasCalledUponReverseBinaryConverter\n"
         else:
             log += "proceedingWithDefaultBase\n"
+        if frmt_sqrt:
+            log += "hasCalledFormattedSquareRoot\n"
+            reply = formatted_square(reply)
         
         reply = safety_formatting(reply)
         if interactive:
