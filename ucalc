@@ -1237,43 +1237,47 @@ has been given to me. Try --help for more information.""")
             return string
         
         def formatted_square(num):
-            try: num = int(num)
-            except ValueError: exit("UCalc Excuses: Cannot find squares of non-integer numbers.")
-            def eratos(num):
-                sieve_list = []
-                for each in range(num + 1): sieve_list.append(each)
-                sieve_list.remove(1)
-                sieve_list.remove(0)
-                for i in sieve_list:
-                    for each in sieve_list:
-                        if not each == i:
-                            if each % i == 0: sieve_list.remove(each)
-                return sieve_list
+            high_prime = 0
+            def is_prime(num):
+                up_to = math.ceil(math.sqrt(num)) + 1
+                is_prime = True
+                for each in range(2, up_to):
+                    if not each == num:
+                        if num % each == 0:
+                            is_prime = False
+                            break
+                        
+                return is_prime
 
-            primes = eratos(num)
-            i = 0
-            temp_nums = ""
-            out_brckt = 1
-            while i != len(primes):
-                if num % primes[i] == 0:
-                    num /= primes[i]
-                    temp_nums += str(primes[i]) + " "
-                    i = 0
-                    continue
+            try: num = int(num)
+            except ValueError: exit("Non-Numeric Value")
+
+            factorés = ""
+            i = 2
+            while num != 1:
+                if is_prime(i):
+                    if i > high_prime: high_prime = i
+                    if num % i == 0:
+                        num = num / i
+                        factorés += (str(i) + " ")
+                        i = 2
+                        continue
                 i += 1
 
-            for each in primes:
-                pair_count = temp_nums.count(f"{each} {each}")
-                temp_nums = temp_nums.replace(f"{each} {each}", "")
-                out_brckt *= each ** pair_count
+            outsqrt = 1
+            insqrt = 1
+            for each in range(1, high_prime + 1):
+                pair = factorés.count(f"{each} {each}")
+                factorés = factorés.replace(f"{each} {each}", "")
+                if not pair == 0: outsqrt *= (each ** pair)
+                if factorés.strip() == "": break
+            factorés = factorés.strip()
+            for each in factorés.split():
+                insqrt *= int(each)
+            
+            if insqrt == 1: return f"{outsqrt}"
+            else: return f"{outsqrt}·√{insqrt}"
 
-            in_brckt = 1
-            temp_nums = temp_nums.strip()
-            in_num_list = temp_nums.split(" ")
-            for each in in_num_list:
-                if not each == "": in_brckt *= int(each)
-            if in_brckt == 1: return str(out_brckt).strip()
-            else: return (f"{out_brckt}·√{in_brckt}").strip()
 
         # misc_list for creating spaces before and after for chars inside the list
         misc_list = ["+", "-", "/", "%", "^", "x", "*", "·", "{", "}", "[", "]", "(", ")"]
