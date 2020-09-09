@@ -33,7 +33,7 @@ def main():
         path_to_pf_c = "p.c"
         path_to_pf = "./p"
         path_to_ans = "ans"
-        version = "v4.3"
+        version = "v4.5.9"
 
         log_file = open(path_to_log, "w")
         if not interactive:
