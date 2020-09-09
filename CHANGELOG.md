@@ -23,7 +23,7 @@
 ### Fixed asterisk bug
   * Fixed the bug that makes UCalc not
     consider an asterisk as multiplication
-### Created debian package
+### Created Debian package
   * Created Debian package for version 4.0
 
 ## Version 4.1, May 30 2020, Minor:
@@ -32,21 +32,21 @@
   * Also can be run by using python3
   * From 4.3 in the future, requires GNU GCC
 ### Added interactive mode help
-  * Added help for interactive mode in the
+  * Added help for interactive mode in
     the global help 
 
 ## Version 4.102, June 2 2020, Minor:
 ### Fixed factorial error
   * Fixed error when calling factorial by exclamation
     interactive mode
-  * Created debian package for Version 4.102
+  * Created Debian package for Version 4.102
 
 ## Version 4.2, June 29 2020, Minor:
 ### Fixed hexadecimal bug
-  * Fixed error when calling hexadeciaml converters in
+  * Fixed error when calling hexadecimal converters in
     interactive mode
 ### Instant log writer
-  * Added instatn log writing after each question
+  * Added instant log writing after each question
     in interactive mode
 
 ## Version 4.3, July 11 2020, Major:
@@ -62,3 +62,33 @@
 ### Integration of XY
   * Find product-sum factor feature has been
     added through integration XY into UCalc
+
+## Version 4.5.9, September 9 2020, Major
+### Added Prime Finder
+  * Fetching prime numbers upto the specified value
+    with the addition of prime finder
+### Better Brackets
+  * Deep nesting of brackets
+  * One more type of bracket -- "()" among with, "[]" & "{}"
+  * Deep nesting with same type or different
+### Negation
+  * Added ad hoc feature to negate answers for functions that do not
+    take negative values
+  * Fixed a much critical calculation fault -- Not checking
+    if a value is preceded by a substraction sign and considering
+    it negative. (This is excluding the ~ negation)
+### Last Reply Variable
+ * A variable for quickly accessing the reply's value
+ * Later, file creation for the variable was fixed
+### Formatted Square Roots
+ * Added a function to find formatted square root rather than
+   absolute square root
+ * Later, a better function implemented
+### Better Logging
+ * A better and faster method to log implemented
+### Easy Access Constants
+ * An option added which allow for displaying simple and clean
+   version of '--constants' options, with only the constants and
+   not its <em>about</em>
+   
+
