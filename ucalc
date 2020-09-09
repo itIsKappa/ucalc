@@ -1447,7 +1447,6 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
                 os.system(f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 0")
                 log_file.write(f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 0")
             temporary_string = "ans"
-            log_file.write(log)
             called_xy_factoriser = True
 
         final_touch = ""
