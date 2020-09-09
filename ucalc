@@ -24,11 +24,7 @@ def main():
         global interactive
         global log
         global log_file
-        if not interactive:
-            log = f"{ctime()}\n"
-        else:
-            log += f"{ctime()}\n"
-        
+
         path_to_log = "ucalcLog.txt" 
         path_to_f = "./f"
         path_to_f_c = "f.c"
@@ -38,9 +34,15 @@ def main():
         path_to_pf = "./p"
         path_to_ans = "ans"
         version = "v4.3"
+
+        log_file = open(path_to_log, "w")
+        if not interactive:
+            log_file.write(f"{ctime()}\n")
+        else:
+            log_file.write(f"{ctime()}\n")
+        
         with open(path_to_ans, "r") as file:
             ans = file.read()
-        log_file = open(path_to_log, "w")
 
         version_view = f"""
 UCalc © 2020 HathimAli
@@ -784,7 +786,7 @@ Since you are not in a terminal, special characters like
             
         def cube_root(num):
             global log, log_file
-            log_file.write(log) 
+            log_file.write(log)
             num = num.replace(":", "")
             try: num = int(num)
             except ValueError:
@@ -799,7 +801,7 @@ Since you are not in a terminal, special characters like
             global log, log_file
             """ The original factorial finder has been
                 made common to act as a fallback """
-            log += f"{num}"
+            log_file.write(f"{num}")
             log_file.write(log)
             num = num.replace("?", "")
             num = num.replace("!", "")
@@ -861,29 +863,27 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
             for each in range(len(some_list)):
                 if "?" in some_list[each] or "!" in some_list[each]:
                     some_list[each] = factorial(some_list[each])
-                    log += f"Factorial: {some_list[each]}\n"
+                    log_file.write(f"Factorial: {some_list[each]}\n")
                 elif some_list[each].startswith("_") or some_list[each].startswith("√"):
                     some_list[each] = square_root(some_list[each])
-                    log += f"SquareRoot: √{some_list[each]}\n"
+                    log_file.write(f"SquareRoot: √{some_list[each]}\n")
                 elif some_list[each].startswith(":"):
                     some_list[each] = cube_root(some_list[each])
-                    log += f"CubeRoot: {some_list[each]}\n"
-            log_file.write(log)
-
+                    log_file.write(f"CubeRoot: {some_list[each]}\n")
             for each in some_list:
                 to_be_num_string += each + " "
             to_be_num_string = to_be_num_string.strip()
-            log += f"to_be_num: {to_be_num_string}\n"
+            log_file.write(f"to_be_num: {to_be_num_string}\n")
             num = to_be_num_string
 
             # RaiseTo / PowerOf #############################
             pow_split = num.split(" ^ ")
-            log += f"^^^{pow_split}\n"
+            log_file.write(f"^^^{pow_split}\n")
             for i in range(len(pow_split)):
                 pow_split[i] = pow_split[i].strip()
                 pow_split[i] = pow_split[i].replace("~", "-")
 
-            log += f"{pow_split}\n"
+            log_file.write(f"{pow_split}\n")
             while len(pow_split) != 1:
                 one_value_list = pow_split[0].split(" ")
                 two_value_list = pow_split[1].split(" ")
@@ -912,7 +912,7 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
                     some_string += each + " "
                 some_string = some_string.strip()
 
-                log += f"{pow_split}\n"
+                log_file.write(f"{pow_split}\n")
                 pow_split.remove(pow_split[0])
                 pow_split.remove(pow_split[0])
                 pow_split.insert(0, some_string)
@@ -921,13 +921,13 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
 
             # Division ################################
             div_split = num.split(" / ")
-            log += f"///{div_split}\n"
+            log_file.write(f"///{div_split}\n")
 
             for i in range(len(div_split)):
                 div_split[i] = div_split[i].strip()
                 div_split[i] = div_split[i].replace("~", "-")
 
-            log += f"{div_split}\n"
+            log_file.write(f"{div_split}\n")
             while len(div_split) != 1:
                 one_value_list = div_split[0].split(" ")
                 two_value_list = div_split[1].split(" ")
@@ -962,7 +962,7 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
                     some_string += each + " "
                 some_string = some_string.strip()
 
-                log += f"{div_split}\n"
+                log_file.write(f"{div_split}\n")
                 div_split.remove(div_split[0])
                 div_split.remove(div_split[0])
                 div_split.insert(0, some_string)
@@ -971,13 +971,13 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
 
             # Remainder / Modulus ############################
             modulus_split = num.split(" % ")
-            log += f"%%%{modulus_split}\n"
-            log += f""
+            log_file.write(f"%%%{modulus_split}\n")
+            log_file.write(f"")
             for i in range(len(modulus_split)):
                 modulus_split[i] = modulus_split[i].strip()
                 modulus_split[i] = modulus_split[i].replace("~", "-")
 
-            log += f"{modulus_split}\n"
+            log_file.write(f"{modulus_split}\n")
             while len(modulus_split) != 1:
                 one_value_list = modulus_split[0].split(" ")
                 two_value_list = modulus_split[1].split(" ")
@@ -1006,7 +1006,7 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
                     some_string += each + " "
                 some_string = some_string.strip()
 
-                log += f"{modulus_split}\n"
+                log_file.write(f"{modulus_split}\n")
                 modulus_split.remove(modulus_split[0])
                 modulus_split.remove(modulus_split[0])
                 modulus_split.insert(0, some_string)
@@ -1015,13 +1015,13 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
 
             # Multiplication ###############################
             multi_split = num.split(" x ")
-            log += f"***{multi_split}\n"
+            log_file.write(f"***{multi_split}\n")
 
             for i in range(len(multi_split)):
                 multi_split[i] = multi_split[i].strip()
                 multi_split[i] = multi_split[i].replace("~", "-")
 
-            log += f"{multi_split}\n"
+            log_file.write(f"{multi_split}\n")
             while len(multi_split) != 1:
                 one_value_list = multi_split[0].split(" ")
                 two_value_list = multi_split[1].split(" ")
@@ -1050,7 +1050,7 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
                     some_string += each + " "
                 some_string = some_string.strip()
 
-                log += f"{multi_split}\n"
+                log_file.write(f"{multi_split}\n")
                 multi_split.remove(multi_split[0])
                 multi_split.remove(multi_split[0])
                 multi_split.insert(0, some_string)
@@ -1059,13 +1059,13 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
 
             # Addition ###############################
             add_split = num.split(" + ")
-            log += f"+++{add_split}\n"
+            log_file.write(f"+++{add_split}\n")
 
             for i in range(len(add_split)):
                 add_split[i] = add_split[i].strip()
                 add_split[i] = add_split[i].replace("~", "-")
 
-            log += f"{add_split}\n"
+            log_file.write(f"{add_split}\n")
             while len(add_split) != 1:
                 one_value_list = add_split[0].split(" ")
                 two_value_list = add_split[1].split(" ")
@@ -1101,7 +1101,7 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
                     some_string += each + " "
                 some_string = some_string.strip()
 
-                log += f"{add_split}\n"
+                log_file.write(f"{add_split}\n")
                 add_split.remove(add_split[0])
                 add_split.remove(add_split[0])
                 add_split.insert(0, some_string)
@@ -1110,13 +1110,13 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
 
             # Subtraction ##########################
             sub_split = num.split(" - ")
-            log += f"---{sub_split}\n"
+            log_file.write(f"---{sub_split}\n")
 
             for i in range(len(sub_split)):
                 sub_split[i] = sub_split[i].replace("~", "-")
                 sub_split[i] = sub_split[i].strip()
 
-            log += f"{sub_split}\n"
+            log_file.write(f"{sub_split}\n")
             while len(sub_split) != 1:
                 one_value_list = sub_split[0].split(" ")
                 two_value_list = sub_split[1].split(" ")
@@ -1126,9 +1126,9 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
                     two_value_list.remove("")
                 except ValueError:
                     pass
-                log += f"{one_value_list}"
-                log += f"{two_value_list}"
-                log += f"{sub_split}"
+                log_file.write(f"{one_value_list}")
+                log_file.write(f"{two_value_list}")
+                log_file.write(f"{sub_split}")
                 log_file.write(log)
                 try:
                     one_value = int(one_value_list[-1])
@@ -1148,7 +1148,7 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
                     some_string += each + " "
                 some_string = some_string.strip()
 
-                log += f"{sub_split}\n"
+                log_file.write(f"{sub_split}\n")
                 sub_split.remove(sub_split[0])
                 sub_split.remove(sub_split[0])
                 sub_split.insert(0, some_string)
@@ -1166,17 +1166,17 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
             for each in range(len(args)):
                 if "?" in args[each] or "!" in args[each]:
                     args[each] = factorial(args[each])
-                    log += f"Factorial: {args}\n"
+                    log_file.write(f"Factorial: {args}\n")
                 elif args[each].startswith("_") or args[each].startswith("√"):
                     args[each] = square_root(args[each])
-                    log += f"SquareRoot: {args}\n"
+                    log_file.write(f"SquareRoot: {args}\n")
                 elif args[each].startswith(":"):
                     args[each] = cube_root(args[each])
-                    log += f"SquareRoot: {args}\n"
+                    log_file.write(f"SquareRoot: {args}\n")
 
             log_file.write(log)
             for each in args:
-                log += f"{args} {numbers_list}\n"
+                log_file.write(f"{args} {numbers_list}\n")
                 if each not in operator_list:
                     try:
                         each = int(each)
@@ -1199,14 +1199,14 @@ UCalc Excuses: A non-calculable value({each}) has been given. Try --help for mor
                     numbers_list.append(each)
                     try: args.remove(each.__str__())
                     except ValueError: args.remove(compensation_each.__str__())
-                    log += f"OperaPrint: {args, numbers_list}\n"
-            log += f"{args} {numbers_list}\n"
-            log += f"Args 'n' nums{args, numbers_list}"
+                    log_file.write(f"OperaPrint: {args, numbers_list}\n")
+            log_file.write(f"{args} {numbers_list}\n")
+            log_file.write(f"Args 'n' nums{args, numbers_list}")
 
 
             # Calculation Block
             while True:
-                log += f"CalcNumList: {numbers_list}, argsList: {args}\n"
+                log_file.write(f"CalcNumList: {numbers_list}, argsList: {args}\n")
                 try:
                     if args[0] == "+":
                         value = numbers_list[0] + numbers_list[1]
@@ -1252,10 +1252,10 @@ UCalc Excuses: A non-calculable value({each}) has been given. Try --help for mor
         # Bracket Handler Function
         def brackets(string):
             global log
-            log += f"Entered Bracket Function with ({string})\n"
+            log_file.write(f"Entered Bracket Function with ({string})\n")
             string = string.replace("[", "|@")
             string = string.replace("]", "$|")
-            log += f"Changed ({string}) and ({string.split('[')})\n"
+            log_file.write(f"Changed ({string}) and ({string.split('[')})\n")
             exists_brackets = True
             while True:
                 if not "|" in string: break
@@ -1280,7 +1280,7 @@ UCalc Excuses: A non-calculable value({each}) has been given. Try --help for mor
                                     main()
                                 else: exit("UCalc Excuses: The value is extreme to handle ")
                         sep_list[i] = sep_list[i].replace("-", "~")
-                        log += f"Returned: ({sep_list[i]})\n"
+                        log_file.write(f"Returned: ({sep_list[i]})\n")
                 string = ""
                 for each in sep_list: string += each
                 string = string.replace("@", "|@")
@@ -1339,7 +1339,7 @@ UCalc Excuses: A non-calculable value({each}) has been given. Try --help for mor
         # First item from sys.argv is removed for it is the name of program
         try:
             sys.argv.remove(sys.argv[0])
-            log += f"System-arguments = {sys.argv}\n"
+            log_file.write(f"System-arguments = {sys.argv}\n")
         except IndexError:
             pass
 
@@ -1348,10 +1348,10 @@ UCalc Excuses: A non-calculable value({each}) has been given. Try --help for mor
         for each in sys.argv:
             temporary_string += each
             temporary_two_string += each
-        log += f"temporary_two_string = {temporary_two_string}\n"
+        log_file.write(f"temporary_two_string = {temporary_two_string}\n")
         # Removing optional commas from input
         temporary_string = temporary_string.replace(",", "").strip()
-        log += f"Single: {temporary_string}\n"
+        log_file.write(f"Single: {temporary_string}\n")
         
         def interactive_input_receiver(temporary_string):
             global readline
@@ -1400,12 +1400,6 @@ UCalc Excuses: A non-calculable value({each}) has been given. Try --help for mor
         elif temporary_string == "--constants-simple" or temporary_string == "-cc":
             print(simple_constant_view)
             exit()
-        elif temporary_string == "-L":
-            os.system(f"less {path_to_log}")
-            exit()
-        elif temporary_string == "-Lv":
-            log_file.write(log)
-            exit()
         elif temporary_two_string == "-i" or temporary_two_string == "--interactive" or interactive:
             interactive = True
             temporary_string = interactive_input_receiver(temporary_string)
@@ -1418,9 +1412,9 @@ UCalc Excuses: A non-calculable value({each}) has been given. Try --help for mor
         # for special inputs, thus, x y::
         called_xy_factoriser = False
         if "xy::" in temporary_string or "x y::" in temporary_string:
-            log += "### Passing on labour to XY factoriser ###\n"
+            log_file.write("### Passing on labour to XY factoriser ###\n")
             if not os.path.exists("xy"):
-                log += "### XY was not already compiled - first compilation ###\n"
+                log_file.write("### XY was not already compiled - first compilation ###\n")
                 os.system(f"gcc {path_to_xy_c} -o {path_to_xy} -g -lgmp")
             temporary_string = temporary_string.replace("xy::", "")
             temporary_string = temporary_string.replace("x y::", "")
@@ -1443,10 +1437,10 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
                 exit("UCalc Excuses: Redundant arguments while calling Product-Sum Factoriser.")
             if interactive: 
                 os.system(f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 1")
-                log += f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 1"
+                log_file.write(f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 1")
             else:
                 os.system(f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 0")
-                log += f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 0"
+                log_file.write(f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 0")
             temporary_string = "ans"
             log_file.write(log)
             called_xy_factoriser = True
@@ -1517,8 +1511,8 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
                     print("< ! >: You had either tried to do arithmetic operations or entered invalid base64 value.")
                     main()
                 else: exit("UCalc Excuses: You had either tried to do arithmetic operations or entered invalid base64 value.")
-            log += "madeABaseSixtyFourPromptReply"
-            log += ctime()
+            log_file.write("madeABaseSixtyFourPromptReply")
+            log_file.write(ctime())
             log_file.write(log)
 
             if interactive:
@@ -1543,18 +1537,18 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
             temporary_string = temporary_string.replace(".factor", "")
             temporary_string = temporary_string.replace(".f", "")
             if not os.path.exists(path_to_f):
-                log += "First f Compilation\n"
+                log_file.write("First f Compilation\n")
                 os.system(f"gcc {path_to_f_c} -o {path_to_f} -g -lgmp -w")
-            log += "labour for f\n"
+            log_file.write("labour for f\n")
         if ".primes" in temporary_string or ".p" in temporary_string:
             prime_factorise = True
-            log += f"prime_factorise: {prime_factorise}\n"
+            log_file.write(f"prime_factorise: {prime_factorise}\n")
             temporary_string = temporary_string.replace(".primes", "")
             temporary_string = temporary_string.replace(".p", "")
             if not os.path.exists(path_to_pf):
-                log += "First pf compilation\n"
+                log_file.write("First pf compilation\n")
                 os.system(f"gcc {path_to_pf_c} -o {path_to_pf} -g -lgmp -w")
-            log += "labour for pf\n"
+            log_file.write("labour for pf\n")
         
         temporary_string = extra_input_insurance(temporary_string)
         # For adding the original expression with its answer
@@ -1564,7 +1558,7 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
             temporary_string = temporary_string.replace(each, f" {each} ")
             temporary_string = temporary_string.replace("  ", " ")
 
-        log += f"{temporary_string}\n"
+        log_file.write(f"{temporary_string}\n")
         yet_another_list = temporary_string.split(" ")
 
         temp_string = ""
@@ -1608,12 +1602,11 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
         temp_string = safety_formatting(temp_string)
         temp_string = brackets(temp_string)
         string = temp_string
-        log += "Trekked Brackets\n"
-        log_file.write(log)
+        log_file.write("Trekked Brackets\n")
 
         string = string.strip()
         string = string.replace("--", "+")
-        log += f"After Skirmish: {string}\n"
+        log_file.write(f"After Skirmish: {string}\n")
 
         # Implementing extra input from the user
         if precedence:
@@ -1632,15 +1625,15 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
                 else: exit("UCalc Excuses: The value is extreme to handle ")
         if final_touch == "round":
             reply = str( round( float(reply) ) )
-            log += "roundHasBeenCalled;fromPriorityOne\n"
+            log_file.write("roundHasBeenCalled;fromPriorityOne\n")
         elif final_touch == "ceil":
             reply = str( math.ceil( float(reply) ) )
-            log += "ceilHasBeenCalled;fromPriorityTwo\n"
+            log_file.write("ceilHasBeenCalled;fromPriorityTwo\n")
         elif final_touch == "floor":
             reply = str( math.floor( float(reply) ) )
-            log += "floorHasBeenCalled;fromPriorityThree\n"
+            log_file.write("floorHasBeenCalled;fromPriorityThree\n")
         else:
-            log += "noSpecialInputUsed;fromNull\n"
+            log_file.write("noSpecialInputUsed;fromNull\n")
         if negate:
             try: reply = str( -( int(reply) ) )
             except ValueError: reply = str( -( int(reply) ) ) 
@@ -1648,39 +1641,39 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
         conversion = Converters()
         if converter == "64":
             reply = conversion.base64(reply.__str__())
-            log += "hasCalledUponBaseSixtyFourConverter\n"
+            log_file.write("hasCalledUponBaseSixtyFourConverter\n")
         elif converter == "hex":
             reply = conversion.hexadecimal(reply.__str__())
-            log += "hasCalledUponHexDecimalConverter\n"
+            log_file.write("hasCalledUponHexDecimalConverter\n")
         elif converter == "oct":
             reply = conversion.octal(reply.__str__())
-            log += "hasCalledUponOctalConverter\n"
+            log_file.write("hasCalledUponOctalConverter\n")
         elif converter == "ter":
             reply = conversion.ternary(reply.__str__())
-            log += "hasCalledUponTernaryConverter\n"
+            log_file.write("hasCalledUponTernaryConverter\n")
         elif converter == "bin":
             reply = conversion.binary(reply.__str__())
-            log += "hasCalledUponBinaryConverter\n"
+            log_file.write("hasCalledUponBinaryConverter\n")
         elif converter == "fromhex":
             reply = conversion.reverse_hexadecimal(reply.upper())
-            log += "hasCalledUponReverseHexDecimalConverter\n"
+            log_file.write("hasCalledUponReverseHexDecimalConverter\n")
         elif converter == "fromoct":
             reply = conversion.reverse_octal(reply)
-            log += "hasCalledUponReverseOctalConverter\n"
+            log_file.write("hasCalledUponReverseOctalConverter\n")
         elif converter == "fromter":
             reply = conversion.reverse_ternary(reply)
-            log += "hasCalledUponReverseBinaryConverter\n"
+            log_file.write("hasCalledUponReverseBinaryConverter\n")
 
         elif converter == "frombin":
             reply = conversion.reverse_binary(reply)
-            log += "hasCalledUponReverseBinaryConverter\n"
+            log_file.write("hasCalledUponReverseBinaryConverter\n")
         else:
-            log += "proceedingWithDefaultBase\n"
+            log_file.write("proceedingWithDefaultBase\n")
         if frmt_sqrt:
-            log += "hasCalledFormattedSquareRoot\n"
+            log_file.write("hasCalledFormattedSquareRoot\n")
             reply = formatted_square(reply)
         if prime_factorise:
-            log += "hasCalledPrimeFactorisation\n"
+            log_file.write("hasCalledPrimeFactorisation\n")
         
         reply = safety_formatting(reply)
         if interactive:
@@ -1689,10 +1682,10 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
             else:
                 if not called_xy_factoriser:
                     if not reply == '': print(f"< REPLY >: {reply}")
-                    log += f"UCalc Replied: {along_with_answer} = {reply} @ {ctime()}\n"
+                    log_file.write(f"UCalc Replied: {along_with_answer} = {reply} @ {ctime()}\n")
                 ending_time = time()
                 total_time = ending_time - starting_time
-                log += f"[END] in {total_time}"
+                log_file.write(f"[END] in {total_time}")
             log_file.write(log)
             with open(path_to_ans, "w") as file: file.write(reply)
             main()
@@ -1703,20 +1696,22 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
             else:
                 if not called_xy_factoriser:
                     if not reply == '': print(f"UCalc Replies: {reply}")
-                    log += f"UCalc Replied: {along_with_answer} = {reply} @ {ctime()}\n"
+                    log_file.write(f"UCalc Replied: {along_with_answer} = {reply} @ {ctime()}\n")
                 ending_time = time()
                 total_time = ending_time - starting_time
-                log += f"[END] in {total_time}"
-                log += f"UCalc was liberated @ {ctime()} only employed for {total_time}"
+                log_file.write(f"[END] in {total_time}")
+                log_file.write(f"UCalc was liberated @ {ctime()} only employed for {total_time}")
                 with open(path_to_ans, "w") as file: file.write(reply)
-        log_file.write(log)
 
     except KeyboardInterrupt:
         ending_time = time()
         total_time = ending_time - starting_time
-        log += f"UCalc was liberated @ {ctime()} only employed for {total_time}"
+        log_file.write(f"UCalc was liberated @ {ctime()} only employed for {total_time}")
         log_file.write(log)
         log_file.close()
         exit("-- UCalc has been liberated --")
 main()
+
+
+
 
