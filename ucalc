@@ -41,8 +41,13 @@ def main():
         else:
             log_file.write(f"{ctime()}\n")
         
-        with open(path_to_ans, "r") as file:
-            ans = file.read()
+        try:
+            with open(path_to_ans, "r") as file:
+                ans = file.read()
+        except FileNotFoundError:
+            open(path_to_ans, "w").write("1")
+            with open(path_to_ans, "r") as file:
+                ans = file.read()
 
         version_view = f"""
 UCalc © 2020 HathimAli
