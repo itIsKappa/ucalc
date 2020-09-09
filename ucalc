@@ -23,6 +23,7 @@ def main():
         starting_time = time()
         global interactive
         global log
+        global log_file
         if not interactive:
             log = f"{ctime()}\n"
         else:
@@ -33,8 +34,13 @@ def main():
         path_to_f_c = "f.c"
         path_to_xy = "./xy"
         path_to_xy_c = "xy.c"
+        path_to_pf_c = "p.c"
+        path_to_pf = "./p"
         path_to_ans = "ans"
         version = "v4.3"
+        with open(path_to_ans, "r") as file:
+            ans = file.read()
+        log_file = open(path_to_log, "w")
 
         version_view = f"""
 UCalc © 2020 HathimAli
@@ -71,7 +77,7 @@ E X P R E S S I O N S
 UCalc supports all arithmetic operators:
 + for addition
 - for subtraction
-x or * for multiplication
+x or * or · for multiplication
 / for division but returns quotient
 % for division but returns remainder
 ^ for raising to the power
@@ -80,28 +86,29 @@ UCalc has made arithmetic operators intuitive.
 Usage of x rather than * for multiplication is encouraged.
 * may have to be preceded by \\ to escape * as it is a special character.
 So, it is faster and less to write 8x4 rather than 8\\*4.
+
 -------------------------
      B R A C K E T S       
 -------------------------
-UCalc also supports brackets, two kinds to be exact;
-the curly brackets and the square brackets.
-Though, it must be noted that nested brackets of same kind
-will confuse UCalc and may reply erroneously or may not even reply.
-There cannot be square brackets inside square brackets but curly brackets.
-Exempli gratia, 2+[2x[5+5]] is wrong and UCalc will most likely err
-while 2+[2+{"{5+5}"}] is the best practice and will yield correct answers.
+UCalc also supports brackets. It can understand three types of brackets
+commonly found on almost every keyboard and configuration, which are
+'()', '[]', '{"{}"}'.
+Deep nesting of brackets is also possible indiscriminate of which type
+used. If there are incomplete brackets detected, UCalc will call off 
+the calculations and alarm you.
+
 ---------------------------------------------------------------------------
    F A C T O R I A L S,  S Q U A R E R O O T S  A N D  C U B E R O O T S
 ---------------------------------------------------------------------------
 Factorials:
     There are two ways to tell UCalc to find a number's factorial.
     First is to add "!" to ending of a number.
-    Though, you may have add a  backslash before the exclamation mark
+    Though, you may have to add a backslash before the exclamation mark
     as it is a special character.
     Another, will be to add "?" to ending of a number as it avoids
     having to enter a backslash everytime before you type an
     exclamation mark.
-    Exempli gratia, 5\\! will return 120, but, ?5 also returns 120 and it is
+    Exempli gratia, 5\\! will return 120, but, 5? also returns 120 and it is
     lesser to write.
     Again, [3\\!]\\! will return 720, but, there is backslashes two
     times and your inputs becomes less readable and understandable to
@@ -119,12 +126,13 @@ Square-roots:
     Exempli gratia, _25 will return 5
                _[64+46] will return 10
                If you try finding square root of a number that is
-               not a square, like,
-               _2 then, UCalc will return 1.4142135623730951
+               not a square, you will a decimal number upto 15 digits,
+               like,
+               _2 for which UCalc will return 1.4142135623730951
 
 Cube-roots:
     Fortunately and unfortunately, there is only way in which you can
-    find the cube root of number and that is to add a colon or ":"
+    find the cube root of a number and that is to add a colon or ":"
     to the beginning like you have done as in above cases.
     Exempli gratia, :27 will give 3
 
@@ -136,8 +144,19 @@ Similar to the many extra inputs, which happens to be mentioned
 below extra inputs section, the number is to end with either
 '.factor' or '.f'
 Exempli gratia, 4.factor wil return 1, 2, 4
-We can also do arithmetic operation before finding the factors,
-2+2.factor will return 1, 2, 4
+We can also do arithmetics before finding the factors,
+2+2.factor will also return 1, 2, 4
+
+-------------------
+    P R I M E S
+-------------------
+UCalc also has a functionality that can fetch all the prime
+numbers upto the specified value. This is also called
+with a period '.' and the word 'primes' followed and this
+also falls under the extra inputs section. The period can also
+be followed by a 'p'.
+Exempli gratia, 5.primes will return 2, 3, 5
+Whatever applies to FACTORS also takes this in consideration.
 
 ---------------------------------------------
     P R O D U C T - S U M   F A C T O R S   
@@ -151,7 +170,7 @@ it is the product-sum factor finder, which has, undoubtedly,
 the name 'xy'. XY requires three arguments and no more.
 They are, with respect to order, the product, the sum and
 the counter. The product and the sum are obvious but the counter
-may not be. The counter determines upto how much to count to
+may not be. The counter determines upto how much to count to,
 beginning from one.
 Exempli gratia,
 xy::100::25::100 will return 20 and 5.
@@ -213,6 +232,7 @@ The extra inputs are as follows:
             result is evidently above 1.5, so, as the estimation will
             be to round to the nearest value the result is such,
             id est, 2.
+
 ===================
 C O N V E R T E R S
 ===================
@@ -265,7 +285,7 @@ and return a wrong value. Where as hexadecimal and base-64 reverse
 converters will not tolerate and excuse that they have been given a
 non-convertible value. 
  
-||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 ========================
      O P T I O N S
@@ -293,7 +313,6 @@ non-convertible value.
 ===================
  C O N S T A N T S
 ===================
-
 UCalc is packed with a few constants which avails you from typing 
 specific values everytime and makes UCalc less verbose.
 Exempli gratia, rather than entering 2x22/7x7,
@@ -314,7 +333,7 @@ Constants supported by UCalc {version} are as follows:
 ====================
     """
         simple_constant_view = """
------------------------------------------------
+<>-------------------------------------------<>
     pi : Pi, also (π)
     g : Earth's gravity
     G : Universal Gravitational Constant
@@ -324,7 +343,7 @@ Constants supported by UCalc {version} are as follows:
     c : Speed of Light in Vacuum
     F : Faraday Constant
     k : Boltzmann Constant
------------------------------------------------
+<>-------------------------------------------<>
 """
         i_help_view = f"""
 =======================================
@@ -335,21 +354,16 @@ There are some special input for using interactive mode
 and they are as follows:
     
     quit - quit interactive mode
-
     about - brings about more information about UCalc
-
     version - brings about the current version you are running
-
     help - brings about a helpful guide on how to use UCalc
-
     constants - brings about the list containing all constants
                 supported by UCalc {version}
 ---------------------------------------
 Since you are not in a terminal, special characters like
 "!" and "*" will not be a issue.
 
-[ NOTE ]
-OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
+¡NOTE!: Options do not require hyphens in interactive mode.
 ---------------------------------------
         """
 
@@ -358,7 +372,10 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             def error_correction(self, number):
                 number = str(number)
                 if "." in number or "e" in number:
-                    exit("UCalc Excuses: Cannot convert numbers with floating value or Euler's.")
+                    if interactive:
+                        print("UCalc Excuses: Cannot convert numbers with floating value or Euler's.")
+                        main()
+                    else: exit("UCalc Excuses: Cannot convert numbers with floating value or Euler's.")
 
             def reverse_ternary(self, num):
                 def middle(num):
@@ -405,7 +422,10 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                         try:
                             each_value = int(each_value)
                         except ValueError:
-                            exit("UCalc Excuses: Input does not appear to be hexadecimal value.")
+                            if interactive:
+                                print("UCalc Excuses: Input does not appear to be hexadecimal value.")
+                                main()
+                            else: exit("UCalc Excuses: Input does not appear to be hexadecimal value.")
                         value += 16 ** each * each_value
                     return value
 
@@ -738,8 +758,11 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                             break
                         else:
                             pass
-                print("UCalc warns: This base sixty four conversion may not be reverse convertible in other programs."
-                        "\n *** same conversion values used by YouTube's video identities  ***")
+                if interactive:
+                    print("< !! >: This base sixty four conversion may not be reverse convertible in other programs."
+                          "\n*** same conversion values used by YouTube's video identities  ***")
+                else: print("UCalc Warns: This base sixty four conversion may not be reverse convertible in other programs."
+                            "\n*** same conversion values used by YouTube's video identities  ***")
                 return valum_final
 
 
@@ -760,23 +783,24 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
         
             
         def cube_root(num):
-            global log
-            with open(path_to_log, "w") as file:
-                        file.write(log)
+            global log, log_file
+            log_file.write(log) 
             num = num.replace(":", "")
             try: num = int(num)
             except ValueError:
-                exit(f"UCalc Excuses: Some non-calculable value('{num}') has been given to me.")
+                if interactive:
+                    print(f"< ! >: Some non-calculable value('{num}') has been given to me.")
+                    main()
+                else: exit(f"UCalc Excuses: Some non-calculable value('{num}') has been given to me.")
             value = math.ceil(num ** 0.333333333333333)
             return value.__str__()
 
         def factorial(num):
-            global log
+            global log, log_file
             """ The original factorial finder has been
                 made common to act as a fallback """
             log += f"{num}"
-            with open(path_to_log, "w") as file:
-                file.write(log)
+            log_file.write(log)
             num = num.replace("?", "")
             num = num.replace("!", "")
             try:
@@ -785,7 +809,10 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                 try:
                     num = float(num)
                 except ValueError:
-                    exit(f"UCalc Excuses: Some non-calculable value('{num}') has been given to me.")
+                    if interactive:
+                        print(f"< ! >: Some non-calculable value('{num}') has been given to me.")
+                        main()
+                    else: exit(f"UCalc Excuses: Some non-calculable value('{num}') has been given to me.")
 
             # Fallback # factorial_list = [1]
             # Fallback # factorial_value = 1
@@ -799,14 +826,18 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
             try:
                 return math.factorial(num).__str__()
             except ValueError:
-                exit(f"""
-    UCalc Excuses:
-        Some expression in your input resulted in a floating point value and that value called to find its factorial.
-        Finding factorial of floating point values is impossible for me; It might result in an infinite loop,
-        where your machine might not respond.
-        Your resultant number before calling for finding factorial is {num}
-    """)
-
+                if interactive:
+                    print(f"""
+< ! >: Some expression in your input resulted in a floating point value and that value called to find its factorial.
+            Finding factorial of floating point values is impossible;
+            Your resultant number before calling for finding factorial is {num}  
+""")
+                    main()
+                else: exit(f"""
+UCalc Excuses: Some expression in your input resulted in a floating point value and that value called to find its factorial.
+               Finding factorial of floating point values is impossible;
+               Your resultant number before calling for finding factorial is {num}  
+""")
 
         def square_root(num):
             num = num.replace("_", "")
@@ -817,11 +848,14 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                 try:
                     num = float(num)
                 except ValueError:
-                    exit(f"UCalc Excuses: Some non-calculable value('{num}') has been given to me.")
+                    if interactive:
+                        print(f"< ! >: Cannot find square-roots of non-numerical value; ('{num}')")
+                        main()
+                    else: exit(f"UCalc Excuses: Cannot find square-roots of non-numerical value; ('{num}')")
             return math.sqrt(num).__str__()
 
         def calculator_bodmas(num):
-            global log
+            global log, log_file
             some_list = num.split(" ")
             to_be_num_string = ""
             for each in range(len(some_list)):
@@ -834,8 +868,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                 elif some_list[each].startswith(":"):
                     some_list[each] = cube_root(some_list[each])
                     log += f"CubeRoot: {some_list[each]}\n"
-                with open(path_to_log, "w") as file:
-                    file.write(log)
+            log_file.write(log)
 
             for each in some_list:
                 to_be_num_string += each + " "
@@ -914,7 +947,10 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                 try:
                     div_value = one_value / two_value
                 except ZeroDivisionError:
-                    exit("UCalc Excuses: Cannot divide by zero.")
+                    if interactive:
+                        print("< ! >: Cannot divide by zero ¯\\_('- ')_/¯")
+                        main()
+                    else: exit("UCalc Excuses: Cannot divide by zero ¯\\_('- ')_/¯")
 
                 two_value_list.remove(two_value_list[0])
 
@@ -1048,7 +1084,10 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                         one_value = float(one_value_list[-1])
                         two_value = float(two_value_list[0])
                     except ValueError:
-                        exit(f"UCalc Excuses: Some non-calculable value (\"{num}\") has been given.")
+                        if interactive:
+                            print(f"< ! >: Some non-calculable value (\"{num}\") has been given.")
+                            main()
+                        else: exit(f"UCalc Excuses: Some non-calculable value (\"{num}\") has been given.")
 
                 add_value = one_value + two_value
                 two_value_list.remove(two_value_list[0])
@@ -1090,8 +1129,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                 log += f"{one_value_list}"
                 log += f"{two_value_list}"
                 log += f"{sub_split}"
-                with open(path_to_log, "w") as file:
-                    file.write(log)
+                log_file.write(log)
                 try:
                     one_value = int(one_value_list[-1])
                     two_value = int(two_value_list[0])
@@ -1121,7 +1159,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
 
 
         def calculator_precedence(args):
-            global log
+            global log, log_file
             operator_list = ["+", "-", "/", "%", "^", "x", "*"]
             numbers_list = []
             # Separating Arithmetic Operators From Numbers Block
@@ -1136,9 +1174,7 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                     args[each] = cube_root(args[each])
                     log += f"SquareRoot: {args}\n"
 
-            with open(path_to_log, "w") as file:
-                file.write(log)
-            
+            log_file.write(log)
             for each in args:
                 log += f"{args} {numbers_list}\n"
                 if each not in operator_list:
@@ -1153,9 +1189,13 @@ OPTIONS DO NOT REQUIRE HYPHENS BEFORE THEM IN INTERACTIVE MODE!
                                 each = each.replace("~", "-")
                                 each = int(each)
                             else:
-                                exit(f"""
-UCalc Excuses: A non-calculable value({each})
-has been given to me. Try --help for more information.""")
+                                if interactive:
+                                    print(f"""
+< ! >: A non-calculable value({each}) has been given. Try --help for more information.""")
+                                    main()
+                                else: exit(f"""
+UCalc Excuses: A non-calculable value({each}) has been given. Try --help for more information.""")
+
                     numbers_list.append(each)
                     try: args.remove(each.__str__())
                     except ValueError: args.remove(compensation_each.__str__())
@@ -1226,8 +1266,19 @@ has been given to me. Try --help for more information.""")
                         sep_list[i] = sep_list[i].replace("$", "")
                         sep_list[i] = sep_list[i].replace("|", "")
                         if precedence:
-                            sep_list[i] = calculator_precedence(sep_list[i].strip().split(" "))
-                        else: sep_list[i] = calculator_bodmas(sep_list[i].strip())
+                            try: sep_list[i] = calculator_precedence(sep_list[i].strip().split(" "))
+                            except OverflowError:
+                                if interactive:
+                                    print("< EXCUSE >: The value is extreme to handle ")
+                                    main()
+                                else: exit("UCalc Excuses: The value is extreme to handle ")
+                        else:
+                            try: sep_list[i] = calculator_bodmas(sep_list[i].strip())
+                            except OverflowError:
+                                if interactive:
+                                    print("< EXCUSE >: The value is extreme to handle ")
+                                    main()
+                                else: exit("UCalc Excuses: The value is extreme to handle ")
                         sep_list[i] = sep_list[i].replace("-", "~")
                         log += f"Returned: ({sep_list[i]})\n"
                 string = ""
@@ -1250,7 +1301,11 @@ has been given to me. Try --help for more information.""")
                 return is_prime
 
             try: num = int(num)
-            except ValueError: exit("Non-Numeric Value")
+            except ValueError:
+                if interactive:
+                    print("< ! >: Not a numeric value to find formatted square-roots")
+                    main()
+                else: exit("UCalc Excuses: Not a numeric value to find formatted square-roots")
 
             factorés = ""
             i = 2
@@ -1280,7 +1335,7 @@ has been given to me. Try --help for more information.""")
 
 
         # misc_list for creating spaces before and after for chars inside the list
-        misc_list = ["+", "-", "/", "%", "^", "x", "*", "·", "{", "}", "[", "]", "(", ")"]
+        misc_list = ["+", "-", "/", "÷", "%", "^", "x", "×", "*", "·", "{", "}", "[", "]", "(", ")"]
         # First item from sys.argv is removed for it is the name of program
         try:
             sys.argv.remove(sys.argv[0])
@@ -1349,8 +1404,7 @@ has been given to me. Try --help for more information.""")
             os.system(f"less {path_to_log}")
             exit()
         elif temporary_string == "-Lv":
-            with open(path_to_log, "r") as file:
-                print(file.read())
+            log_file.write(log)
             exit()
         elif temporary_two_string == "-i" or temporary_two_string == "--interactive" or interactive:
             interactive = True
@@ -1372,14 +1426,21 @@ has been given to me. Try --help for more information.""")
             temporary_string = temporary_string.replace("x y::", "")
             find_xy_list = temporary_string.split("::")
             if len(find_xy_list) < 3:
-                print("""
+                if interactive:
+                    print("""
+< ! >: There is insuffient arguments for finding the Product-Sum factor.
+UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
+""")                
+                    main()
+                exit("""
 UCalc Excuses: There is insuffient arguments for finding the Product-Sum factor.
 UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
 """)
-                exit()
             if len(find_xy_list) > 3:
-                print("UCalc Excuses: Redundant arguments while calling Product-Sum Factoriser.")
-                exit()
+                if interactive:
+                    print("< ! >: Redundant arguments while calling Product-Sum Factoriser.")
+                    main()
+                exit("UCalc Excuses: Redundant arguments while calling Product-Sum Factoriser.")
             if interactive: 
                 os.system(f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 1")
                 log += f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 1"
@@ -1387,14 +1448,14 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
                 os.system(f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 0")
                 log += f"{path_to_xy} {find_xy_list[0]} {find_xy_list[1]} {find_xy_list[2]} 0"
             temporary_string = "ans"
-            with open("ucalcLog.txt", "w") as file:
-                file.write(log)
+            log_file.write(log)
             called_xy_factoriser = True
 
         final_touch = ""
         precedence = False
         converter = "none"
         factorise = False
+        prime_factorise = False
         frmt_sqrt = False
         negate = False
         if ".round" in temporary_string:
@@ -1418,7 +1479,6 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
 
         types_of_converter = [".base64", ".hex", ".bin", ".oct", ".fromhex", ".frombin",
                               ".fromoct"]
-
 
         def extra_input_insurance(temporary_string):
             # Ensuring that there are no more than one converter call
@@ -1448,16 +1508,23 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
             converter = "ter"
         elif ".from64" in temporary_string:
             temporary_string = temporary_string.replace(".from64", "")
+            temporary_string = temporary_string.replace("ans", ans)
             temporary_string = extra_input_insurance(temporary_string)
             try:
                 prompt_reply = Converters().reverse_base64(temporary_string)
             except ValueError:
-                exit("UCalc Excuses: You had either tried to do arithmetic operations or entered invalid base64 value.")
+                if interactive:
+                    print("< ! >: You had either tried to do arithmetic operations or entered invalid base64 value.")
+                    main()
+                else: exit("UCalc Excuses: You had either tried to do arithmetic operations or entered invalid base64 value.")
             log += "madeABaseSixtyFourPromptReply"
             log += ctime()
-            with open(path_to_log, "w") as file:
-                file.write(log)
-            exit(f"UCalc has skipped everything and replied: {prompt_reply}")
+            log_file.write(log)
+
+            if interactive:
+                print(f"< REPLY >: Skipped everything and replied: {prompt_reply}")
+                main()
+            else: exit(f"UCalc has skipped everything and replied: {prompt_reply}")
         elif ".fromhex" in temporary_string or ".fromhe x" in temporary_string:
             temporary_string = temporary_string.replace(".fromhex", "")
             temporary_string = temporary_string.replace(".fromhe x", "")
@@ -1475,19 +1542,23 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
             factorise = True
             temporary_string = temporary_string.replace(".factor", "")
             temporary_string = temporary_string.replace(".f", "")
-            if not os.path.exists(os.path.abspath("f")):
-                log += "### First Factoriser Compilation ###"
+            if not os.path.exists(path_to_f):
+                log += "First f Compilation\n"
                 os.system(f"gcc {path_to_f_c} -o {path_to_f} -g -lgmp -w")
-            log += "### Prepared labour for Factoriser ###\n"
-
-        temporary_string = extra_input_insurance(temporary_string)
-
-        along_with_answer = temporary_string
+            log += "labour for f\n"
+        if ".primes" in temporary_string or ".p" in temporary_string:
+            prime_factorise = True
+            log += f"prime_factorise: {prime_factorise}\n"
+            temporary_string = temporary_string.replace(".primes", "")
+            temporary_string = temporary_string.replace(".p", "")
+            if not os.path.exists(path_to_pf):
+                log += "First pf compilation\n"
+                os.system(f"gcc {path_to_pf_c} -o {path_to_pf} -g -lgmp -w")
+            log += "labour for pf\n"
         
-        # Last Reply Value
-        with open(path_to_ans, "r") as file: 
-            ans = file.read()
-            temporary_string = temporary_string.replace("ans", ans)
+        temporary_string = extra_input_insurance(temporary_string)
+        # For adding the original expression with its answer
+        along_with_answer = temporary_string
 
         for each in misc_list:
             temporary_string = temporary_string.replace(each, f" {each} ")
@@ -1505,10 +1576,14 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
             temp_string = temp_string.replace("(", "[")
             temp_string = temp_string.replace(")", "]")
 
+
             temp_string = temp_string.replace("*", "x")
             temp_string = temp_string.replace("·", "x")
+            temp_string = temp_string.replace("×", "x")
+            temp_string = temp_string.replace("÷", "/")
 
             # Special Values
+            temp_string = temp_string.replace("ans", ans)
             temp_string = temp_string.replace("pi", (22 / 7).__str__())  # Pi
             temp_string = temp_string.replace("π", (22 / 7).__str__())  # Pi Littera Graecia
             temp_string = temp_string.replace("g", "9.8")  # Gravity of the Earth
@@ -1520,26 +1595,41 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
             temp_string = temp_string.replace("F", (9.649 * 10 ** 4).__str__()) # Faraday Constant
             temp_string = temp_string.replace("c", (2.9979 * 10 ** 8).__str__()) # Speed Of Light In Vacuum
 
+        # Checking for bracket equilibrium
+        if temp_string.count("[") != temp_string.count("]"):
+            if interactive:
+                print("< ! >: There are incomplete brackets in the expression.")
+                main()
+            else: exit("UCalc Excuses: There are incomplete brackets in the expression.")
+
         # Very First Format Encounter
         temp_string = temp_string.replace("-", "+ ~")
-        temp_string = temp_string.replace("e+ ~", "e-")
+        temp_string = temp_string.replace("e+ ~", "e-") # Avoiding errors from the above instruction
         temp_string = safety_formatting(temp_string)
         temp_string = brackets(temp_string)
         string = temp_string
         log += "Trekked Brackets\n"
-        with open(path_to_log, "w") as file:
-            file.write(log)
+        log_file.write(log)
 
         string = string.strip()
         string = string.replace("--", "+")
         log += f"After Skirmish: {string}\n"
 
         # Implementing extra input from the user
-        if not precedence:
-            reply = calculator_bodmas(string)
+        if precedence:
+            try: reply = str( calculator_precedence( string.split(" ") ) )
+            except OverflowError:
+                if interactive:
+                    print("< EXCUSE >: The value is extreme to handle ")
+                    main()
+                else: exit("UCalc Excuses: The value is extreme to handle ")
         else:
-            reply = str( calculator_precedence( string.split(" ") ) )
-
+            try: reply = calculator_bodmas(string)
+            except OverflowError:
+                if interactive:
+                    print("< EXCUSE >: The value is extreme to handle ")
+                    main()
+                else: exit("UCalc Excuses: The value is extreme to handle ")
         if final_touch == "round":
             reply = str( round( float(reply) ) )
             log += "roundHasBeenCalled;fromPriorityOne\n"
@@ -1589,11 +1679,13 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
         if frmt_sqrt:
             log += "hasCalledFormattedSquareRoot\n"
             reply = formatted_square(reply)
+        if prime_factorise:
+            log += "hasCalledPrimeFactorisation\n"
         
         reply = safety_formatting(reply)
         if interactive:
-            if factorise:
-                os.system(f"{path_to_f} {reply} 1")
+            if factorise: os.system(f"{path_to_f} {reply} 1")
+            elif prime_factorise:  os.system(f"{path_to_pf} {reply} 1")
             else:
                 if not called_xy_factoriser:
                     if not reply == '': print(f"< REPLY >: {reply}")
@@ -1601,13 +1693,13 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
                 ending_time = time()
                 total_time = ending_time - starting_time
                 log += f"[END] in {total_time}"
-            with open(path_to_log, "w") as file: file.write(log)
+            log_file.write(log)
             with open(path_to_ans, "w") as file: file.write(reply)
             main()
 
         else:
-            if factorise:
-                os.system(f"{path_to_f} {reply} 0")
+            if factorise: os.system(f"{path_to_f} {reply} 0")
+            elif prime_factorise: os.system(f"{path_to_pf} {reply} 0")
             else:
                 if not called_xy_factoriser:
                     if not reply == '': print(f"UCalc Replies: {reply}")
@@ -1617,14 +1709,14 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
                 log += f"[END] in {total_time}"
                 log += f"UCalc was liberated @ {ctime()} only employed for {total_time}"
                 with open(path_to_ans, "w") as file: file.write(reply)
-        with open(path_to_log, "w") as file: file.write(log)
+        log_file.write(log)
 
     except KeyboardInterrupt:
         ending_time = time()
         total_time = ending_time - starting_time
         log += f"UCalc was liberated @ {ctime()} only employed for {total_time}"
-        with open(path_to_log, "w") as file:
-            file.write(log)
+        log_file.write(log)
+        log_file.close()
         exit("-- UCalc has been liberated --")
 main()
 
