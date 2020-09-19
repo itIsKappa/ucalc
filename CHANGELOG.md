@@ -90,5 +90,10 @@
  * An option added which allow for displaying simple and clean
    version of '--constants' options, with only the constants and
    not its <em>about</em>
-   
+### Custom Variables
+ * Addition of feature to save custom variable
+### Omitted
+ * Cube root due to inconsistency (Con)
+ * Tilde for negation (Pro)
+
 
