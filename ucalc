@@ -25,7 +25,8 @@ def main():
         global log
         global log_file
 
-        path_to_log = "ucalcLog.txt" 
+        path_to_log = "ucalcLog.txt"
+        path_to_eqs = "__eps__/"
         path_to_f = "./f"
         path_to_f_c = "f.c"
         path_to_xy = "./xy"
@@ -104,9 +105,9 @@ Deep nesting of brackets is also possible indiscriminate of which type
 used. If there are incomplete brackets detected, UCalc will call off 
 the calculations and alarm you.
 
----------------------------------------------------------------------------
-   F A C T O R I A L S,  S Q U A R E R O O T S  A N D  C U B E R O O T S
----------------------------------------------------------------------------
+------------------------------------------------------
+    F A C T O R I A L S  &  S Q U A R E R O O T S      
+------------------------------------------------------
 Factorials:
     There are two ways to tell UCalc to find a number's factorial.
     First is to add "!" to ending of a number.
@@ -136,12 +137,6 @@ Square-roots:
                not a square, you will a decimal number upto 15 digits,
                like,
                _2 for which UCalc will return 1.4142135623730951
-
-Cube-roots:
-    Fortunately and unfortunately, there is only way in which you can
-    find the cube root of a number and that is to add a colon or ":"
-    to the beginning like you have done as in above cases.
-    Exempli gratia, :27 will give 3
 
 ---------------------
     F A C T O R S      
@@ -200,17 +195,6 @@ Thus, an expression followed by '.precede' will prompt UCalc to use
 the rule of precedence.
 Exempli gratia, 5-4x2 will return -3, but,
 5-4x2.precede will return 2
-
-============================
-N E G A T I V E  V A L U E S
-============================
-Negating a value in UCalc is simple.
-You should add ~ to the beginning of the number.
-Exempli gratia, 2--2 or 2-[-2] is wrong and it will cause errors.
-           2-~2 is the right way and will return the aniticipated value,
-           id est, 0
-Simply a minus sign is considered an arithmetic operator to UCalc,
-if only a value begins with ~, UCalc will consider it negative.
 
 ======================
 E X T R A  I N P U T S
@@ -290,7 +274,42 @@ for even if you are to enter wrong values to
 binary, octal and ternary converters, they will tolerate
 and return a wrong value. Where as hexadecimal and base-64 reverse
 converters will not tolerate and excuse that they have been given a
-non-convertible value. 
+non-convertible value.
+
+=================
+C O N S T A N T S
+=================
+UCalc has in-built scientific and mathematical constants which
+can be easily accessed with their respective symbol with which
+they are denoted. Further information can be obtained with
+'ucalc --constants'.
+
+---------------------------------------
+    C U S T O M   V A R I A B L E S
+---------------------------------------
+UCalc can save custom variables. These fall under extra inputs.
+After an expression, '.epX' is to be attached where 'X' denotes
+the expression number. 'ep' is contraction for expression.
+Exempli gratia, 9876.ep1 will be saved as expression 1.
+If it is, 344+1.ep1, then it will not be stored as 345 but as
+344+1 itself, thus the name.
+
+These variables can be later used with simply 'epX', where 'X' is
+again the respective expression number.
+¡NOTE!: All other extra inputs will ignored while using this and if
+any other inputs mentioned they are but rendered useless.
+
+--view-expressions / -eps can be used to display all the variables
+you have currently saved.
+
+--------------------------
+    L A S T   V A L U E
+--------------------------
+The last reply's value can be accessed by the variable 'ans'.
+This variables changes its value every 'ask' except a few like
+factor and prime finding or xy factorisation. Why they are not
+stored as 'ans' is easily understandable when you peruse through
+their results.
  
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -298,21 +317,19 @@ non-convertible value.
      O P T I O N S
 ========================
 
---help or -h - brings about what you are seeing.
-
---about or -ab - brings about more information about licensing
-                 and the program.
-
---version or -v - brings about information about the version of the
-                  program that you are currently running.
-
---constants or -c - brings about the list containing constants supported
-                    by UCalc {version}
-
+--help / -h - brings about what you are seeing.
+--about / -ab - brings about more information about licensing
+                and the program.
+--version / -v - brings about information about the version of the
+                 program that you are currently running.
+--constants / -c - brings about the list containing constants supported
+                   by UCalc {version}
+--constants-simple / -cc - same as above but without additional information
+                           and with a simplified layout
 -L - shows the log of last calculation using "less" utility in Linux.
-
 -Lv - dumps the log of last calculation into terminal or standard out.
-
+--view-expressions / -eps - display all the variables you have marked
+                    and their current values
 ========================
 ||||||||||||||||||||||||| UCalc © 2020 HathimAli |||||||||||||||||||||||||
 """
@@ -360,18 +377,17 @@ Rules and functionality are same as simply evoking UCalc.
 There are some special input for using interactive mode
 and they are as follows:
     
-    quit - quit interactive mode
-    about - brings about more information about UCalc
-    version - brings about the current version you are running
-    help - brings about a helpful guide on how to use UCalc
-    constants - brings about the list containing all constants
+    --quit / -q - quit interactive mode
+    --about / -ab  - brings about more information about UCalc
+    --version / -v - brings about the current version you are running
+    --help / -h - brings about a helpful guide on how to use UCalc
+    --constants / -c - brings about the list containing all constants
                 supported by UCalc {version}
----------------------------------------
-Since you are not in a terminal, special characters like
-"!" and "*" will not be a issue.
-
-¡NOTE!: Options do not require hyphens in interactive mode.
----------------------------------------
+    --constants-simple / -cc - same as above but without additional
+                        information and with a simplied layout
+    --view-expressions / -eps - display all the variables you have marked
+                        and their current values
+=======================================
         """
 
         class Converters():
@@ -778,36 +794,24 @@ Since you are not in a terminal, special characters like
             string = string.replace("~ ", "~")
             string = string.replace("_ ", "_")
             string = string.replace(" _ ", "_")
-            string = string.replace(" - ", "substitute_text")
+            string = string.replace(" - ", "subtxt")
             string = string.replace("- ", "-")
-            string = string.replace("substitute_text", " - ")
+            string = string.replace("subtxt", " - ")
             string = string.replace("--", "+")
             string = string.replace("~~", "+")
+            string = string.replace("- -", "+")
+            string = string.replace("+ ~+ ~", "+ ")
             string = string.replace("++", "+")
             string = string.replace(" ?", "?")
             string = string.replace(" !", "!")
+            string = string.strip("+") 
             return string
-        
-            
-        def cube_root(num):
-            global log, log_file
-            log_file.write(log)
-            num = num.replace(":", "")
-            try: num = int(num)
-            except ValueError:
-                if interactive:
-                    print(f"< ! >: Some non-calculable value('{num}') has been given to me.")
-                    main()
-                else: exit(f"UCalc Excuses: Some non-calculable value('{num}') has been given to me.")
-            value = math.ceil(num ** 0.333333333333333)
-            return value.__str__()
 
         def factorial(num):
-            global log, log_file
+            global log_file
             """ The original factorial finder has been
                 made common to act as a fallback """
             log_file.write(f"{num}")
-            log_file.write(log)
             num = num.replace("?", "")
             num = num.replace("!", "")
             try:
@@ -862,7 +866,7 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
             return math.sqrt(num).__str__()
 
         def calculator_bodmas(num):
-            global log, log_file
+            global log_file
             some_list = num.split(" ")
             to_be_num_string = ""
             for each in range(len(some_list)):
@@ -872,9 +876,6 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
                 elif some_list[each].startswith("_") or some_list[each].startswith("√"):
                     some_list[each] = square_root(some_list[each])
                     log_file.write(f"SquareRoot: √{some_list[each]}\n")
-                elif some_list[each].startswith(":"):
-                    some_list[each] = cube_root(some_list[each])
-                    log_file.write(f"CubeRoot: {some_list[each]}\n")
             for each in some_list:
                 to_be_num_string += each + " "
             to_be_num_string = to_be_num_string.strip()
@@ -1134,7 +1135,6 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
                 log_file.write(f"{one_value_list}")
                 log_file.write(f"{two_value_list}")
                 log_file.write(f"{sub_split}")
-                log_file.write(log)
                 try:
                     one_value = int(one_value_list[-1])
                     two_value = int(two_value_list[0])
@@ -1164,7 +1164,7 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
 
 
         def calculator_precedence(args):
-            global log, log_file
+            global log_file
             operator_list = ["+", "-", "/", "%", "^", "x", "*"]
             numbers_list = []
             # Separating Arithmetic Operators From Numbers Block
@@ -1175,11 +1175,7 @@ UCalc Excuses: Some expression in your input resulted in a floating point value 
                 elif args[each].startswith("_") or args[each].startswith("√"):
                     args[each] = square_root(args[each])
                     log_file.write(f"SquareRoot: {args}\n")
-                elif args[each].startswith(":"):
-                    args[each] = cube_root(args[each])
-                    log_file.write(f"SquareRoot: {args}\n")
 
-            log_file.write(log)
             for each in args:
                 log_file.write(f"{args} {numbers_list}\n")
                 if each not in operator_list:
@@ -1256,8 +1252,10 @@ UCalc Excuses: A non-calculable value({each}) has been given. Try --help for mor
 
         # Bracket Handler Function
         def brackets(string):
-            global log
+            global log_file
             log_file.write(f"Entered Bracket Function with ({string})\n")
+            string = safety_formatting(string)
+            log_file.write(f"safety-formatted: ({string})\n")
             string = string.replace("[", "|@")
             string = string.replace("]", "$|")
             log_file.write(f"Changed ({string}) and ({string.split('[')})\n")
@@ -1271,14 +1269,15 @@ UCalc Excuses: A non-calculable value({each}) has been given. Try --help for mor
                         sep_list[i] = sep_list[i].replace("$", "")
                         sep_list[i] = sep_list[i].replace("|", "")
                         if precedence:
-                            try: sep_list[i] = calculator_precedence(sep_list[i].strip().split(" "))
+                            try:
+                                sep_list[i] = calculator_precedence(sep_list[i].strip().split(" ")).strip("+")
                             except OverflowError:
                                 if interactive:
                                     print("< EXCUSE >: The value is extreme to handle ")
                                     main()
                                 else: exit("UCalc Excuses: The value is extreme to handle ")
                         else:
-                            try: sep_list[i] = calculator_bodmas(sep_list[i].strip())
+                            try: sep_list[i] = calculator_bodmas(sep_list[i].strip()).strip("+")
                             except OverflowError:
                                 if interactive:
                                     print("< EXCUSE >: The value is extreme to handle ")
@@ -1293,6 +1292,7 @@ UCalc Excuses: A non-calculable value({each}) has been given. Try --help for mor
             return string
         
         def formatted_square(num):
+            num = safety_formatting(num)
             high_prime = 0
             def is_prime(num):
                 up_to = math.ceil(math.sqrt(num)) + 1
@@ -1368,23 +1368,33 @@ UCalc Excuses: A non-calculable value({each}) has been given. Try --help for mor
             temporary_string.replace(",", "")
             for each in misc_list:
                 temporary_string = temporary_string.replace(each, f" {each} ")
+            temporary_string = temporary_string.strip()
             
-            if temporary_string == "help":
+            if temporary_string == "- - help" or temporary_string == "- h":
                 print(i_help_view)
                 main()
-            elif temporary_string == "about":
+            elif temporary_string == "- - about" or temporary_string == "- ab":
                 print(about_view)
                 main()
-            elif temporary_string == "version":
+            elif temporary_string == "- - version" or temporary_string == "- v":
                 print(version_view)
                 main()
-            elif temporary_string == "constants":
+            elif temporary_string == "- - constants" or temporary_string == "- c":
                 print(constant_view)
                 main()
-            elif temporary_string == "cc":
+            elif temporary_string == "- - constants - simple" or temporary_string == "- cc":
                 print(simple_constant_view)
                 main()
-            elif temporary_string == "quit":
+            elif temporary_string == "- - view - expressions" or temporary_string == "- eps":
+                eqss = os.listdir(f"{path_to_eqs}")
+                print("\n<>-------------------------------------------<>")
+                for each in eqss:
+                    with open(f"{path_to_eqs}{each}", "r") as file: ep_value = file.read()
+                    log_file.write(f"listed_eps: {path_to_eqs}{each}\n")
+                    print(f"{each.replace('ep', 'ep(') + ')'} --> {ep_value}")
+                print("<>-------------------------------------------<>\n")
+                main()
+            elif temporary_string == "- - quit" or temporary_string == "- q":
                 exit("< QUIT >")
 
             return temporary_string    
@@ -1405,6 +1415,14 @@ UCalc Excuses: A non-calculable value({each}) has been given. Try --help for mor
         elif temporary_string == "--constants-simple" or temporary_string == "-cc":
             print(simple_constant_view)
             exit()
+        elif temporary_string == "--view-expressions" or temporary_string == "-eps":
+            eqss = os.listdir(f"{path_to_eqs}")
+            print("\n<>-------------------------------------------<>")
+            for each in eqss:
+                with open(f"{path_to_eqs}{each}", "r") as file: ep_value = file.read()
+                log_file.write(f"listed_eqs: {path_to_eqs}{each}\n")
+                print(f"{each.replace('ep', 'ep(') + ')'} --> {ep_value}")
+            exit("<>-------------------------------------------<>\n")
         elif temporary_two_string == "-i" or temporary_two_string == "--interactive" or interactive:
             interactive = True
             temporary_string = interactive_input_receiver(temporary_string)
@@ -1517,7 +1535,6 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
                 else: exit("UCalc Excuses: You had either tried to do arithmetic operations or entered invalid base64 value.")
             log_file.write("madeABaseSixtyFourPromptReply")
             log_file.write(ctime())
-            log_file.write(log)
 
             if interactive:
                 print(f"< REPLY >: Skipped everything and replied: {prompt_reply}")
@@ -1599,6 +1616,30 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
                 print("< ! >: There are incomplete brackets in the expression.")
                 main()
             else: exit("UCalc Excuses: There are incomplete brackets in the expression.")
+
+        # Equation Value Burner
+        if ".ep" in temp_string:
+            ep_num = temp_string.split(".ep")[1].strip()
+            if ep_num == "":
+                if interactive:
+                    print("< ! >: Must specify an equation number")
+                    main()
+                else: exit("UCalc Excuses: Must specify an equation number")
+            temp_string = temp_string.split(".ep")[0]
+            log_file.write(f"ep_num: {ep_num}")
+            with open(f"{path_to_eqs}ep{ep_num}", "w") as file: file.write(temp_string)
+            if interactive:
+                print(f"< REPLY >: ep({ep_num.strip()}) --> {temp_string}")
+                main()
+            else: exit(f"UCalc Replies: ep({ep_num.strip()}) --> {temp_string}")
+        
+        # Equation Value Fetcher
+        if "ep" in temp_string:
+            eq_split = temp_string.split("ep")
+            for each in range(len(eq_split) - 1):
+                ep_num = eq_split[each + 1].split(" ")[0]
+                with open(f"{path_to_eqs}ep{ep_num}", "r") as file: ep_value = file.read()
+                temp_string = temp_string.replace(f"ep{ep_num}", ep_value)
 
         # Very First Format Encounter
         temp_string = temp_string.replace("-", "+ ~")
@@ -1690,7 +1731,6 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
                 ending_time = time()
                 total_time = ending_time - starting_time
                 log_file.write(f"[END] in {total_time}")
-            log_file.write(log)
             with open(path_to_ans, "w") as file: file.write(reply)
             main()
 
@@ -1711,7 +1751,6 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
         ending_time = time()
         total_time = ending_time - starting_time
         log_file.write(f"UCalc was liberated @ {ctime()} only employed for {total_time}")
-        log_file.write(log)
         log_file.close()
         exit("-- UCalc has been liberated --")
 main()
