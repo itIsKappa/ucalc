@@ -791,6 +791,7 @@ and they are as follows:
 
         def safety_formatting(string):
             string = string.strip()
+            string = string.replace("  ", " ")
             string = string.replace("~ ", "~")
             string = string.replace("_ ", "_")
             string = string.replace(" _ ", "_")
@@ -802,6 +803,7 @@ and they are as follows:
             string = string.replace("- -", "+")
             string = string.replace("+ ~+ ~", "+ ")
             string = string.replace("++", "+")
+            string = string.replace("+ +", "+")
             string = string.replace(" ?", "?")
             string = string.replace(" !", "!")
             string = string.strip("+") 
@@ -1627,7 +1629,8 @@ UCalc Exemplifies: xy::(Product)::(Sum)::(Counter Upto), xy::100::25::100
                 else: exit("UCalc Excuses: Must specify an equation number")
             temp_string = temp_string.split(".ep")[0]
             log_file.write(f"ep_num: {ep_num}")
-            with open(f"{path_to_eqs}ep{ep_num}", "w") as file: file.write(temp_string)
+            with open(f"{path_to_eqs}ep{ep_num}", "w") as file:
+                file.write(temp_string)
             if interactive:
                 print(f"< REPLY >: ep({ep_num.strip()}) --> {temp_string}")
                 main()
